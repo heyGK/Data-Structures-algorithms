@@ -1,0 +1,95 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        // write your code here
+             Scanner scn = new Scanner (System.in);
+    int n = scn.nextInt();
+    int m = scn.nextInt();
+    int[][] arr = new int[n][m];
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            arr[i][j] = scn.nextInt();
+        }
+    }
+
+        int i = 0;
+        int j = 0;
+        int top = 0;
+        int bottom = 1;
+        int left = 2;
+        int right = 3;
+        int prev = right;
+
+        while (i < n && j < m)
+        {
+            if (arr[i][j] == 0)
+            {
+                if (prev == 0)
+                {
+                    i--;
+                    prev = 0;
+                }
+                else if (prev == 1)
+                {
+                    i++;
+                    prev = 1;
+                }
+                else if (prev == 2)
+                {
+                    j--;
+                    prev = 2;
+                }
+                else 
+                {
+                    j++;
+                    prev = 3;
+                }
+
+            }
+
+            else 
+            {
+                if (prev == 0)
+                {
+                    j++;
+                    prev = 3;
+                }
+                else if (prev == 1)
+                {
+                    j--;
+                    prev = 2;
+                }
+                else if (prev == 2)
+                {
+                    i--;
+                    prev = 0;
+                }
+                else 
+                {
+                    i++;
+                    prev = 1;
+                }
+            }
+        }
+
+        if (i == n)
+        {
+            i--;
+        }
+
+        if (j == m)
+        {
+            j--;
+        }
+
+        System.out.println(i);
+        System.out.println(j);
+    }
+
+}

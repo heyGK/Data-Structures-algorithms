@@ -1,0 +1,60 @@
+import java.io.*;
+import java.util.*;
+
+public class Main{
+
+public static int Binary (int decimal)
+{
+    int res = 0;
+    int multiplier = 1;
+
+    while (decimal > 0)
+    {
+        int rem = decimal % 2;
+        decimal = decimal / 2;
+
+        res = res + rem * multiplier;
+        multiplier = multiplier * 10;
+    }
+
+    return res;
+}
+
+public static void main(String[] args) throws Exception {
+    // write your code here
+
+    Scanner scn = new Scanner(System.in);
+    int n = scn.nextInt();
+
+    int[] arr = new int[n];
+    for (int i = 0; i < arr.length; i++)
+    {
+        arr[i] =scn.nextInt();
+    }
+
+    int d = (int)Math.pow(2, n);
+    for (int i = 0; i < d; i++)
+    {
+        int b = Binary(i);
+        int m = (int)Math.pow(10, n - 1);
+        for (int j = 0; j < arr.length; j++)
+        {
+            int div = (b / m) % 10;
+
+            if (div == 0)
+            {
+                System.out.print("-\t");
+            }
+
+            else 
+            {
+                System.out.print(arr[j] + "\t");
+            }
+            m = m / 10;
+        }
+        System.out.println();
+    }
+
+ }
+
+}

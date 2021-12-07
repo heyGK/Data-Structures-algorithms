@@ -1,0 +1,64 @@
+import java.io.*;
+import java.util.*;
+
+public class Main{
+
+public static void main(String[] args) throws Exception {
+    // write your code here
+    Scanner scn = new Scanner(System.in);
+    int n = scn.nextInt();
+    int m = scn.nextInt();
+    int[][] arr = new int[n][m];
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m; j++)
+        {
+            arr[i][j] = scn.nextInt();
+        }
+    }
+    
+    
+    int n2 = scn.nextInt();
+    int m2 = scn.nextInt();
+    int[][] arr2 = new int[n2][m2];
+
+    for (int i = 0; i < n2; i++)
+    {
+        for (int j = 0; j < m2; j++)
+        {
+            arr2[i][j] = scn.nextInt();
+        }
+    }
+
+    if (m != n2)
+    {
+        System.out.println("Invalid input");
+        return;
+    }
+    
+    int[][] arr3 = new int[n][m2];
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < m2; j++)
+        {
+           int sum = 0;
+           for (int k = 0; k < m; k++)
+           {
+               sum = sum + (arr[i][k] * arr2[k][j]);
+           }
+
+           arr3[i][j] = sum;
+        }
+    }
+
+    for (int i = 0; i < arr3.length; i++)
+    {
+        for (int j = 0; j < arr3[0].length; j++)
+        {
+            System.out.print(arr3[i][j] + " ");
+        }
+        System.out.println();
+    }
+}
+}

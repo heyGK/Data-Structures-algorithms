@@ -1,0 +1,76 @@
+import java.io.*;
+import java.util.*;
+
+public class Main{
+  
+public static int prec(char ch) {
+    if (ch == '*' || ch == '/') {
+        return 2;
+    }
+    if (ch == '+' || ch == '-') {
+        return 1;
+    }
+
+    return 0;
+}
+
+public static void res (Stack<String> prefix, Stack<String> postfix, char op) {
+    String prefixB = prefix.pop();
+    String prefixA = prefix.pop();
+    prefix.push(op + prefixA + prefixB);
+
+    String postfixB = postfix.pop();
+    String postfixA = postfix.pop();
+    postfix.push(postfixA + postfixB + op);
+}
+
+public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    String exp = br.readLine();
+
+    // code
+    Stack<Character> operators = new Stack<>();
+    Stack<String> prefix = new Stack<>();
+    Stack<String> postfix = new Stack<>();
+
+    for (int i = 0; i < exp.length(); i++) {
+        char ch = exp.charAt(i);
+
+        if (ch >= 'a' && ch <= 'z') {
+            prefix.push(ch + "");
+            postfix.push(ch + "");
+        }
+
+        else if (ch == '(') {
+            operators.push(ch);
+        }
+
+        else if (ch == ')') {
+            while (operators.peek() != '(') {
+                char op = operators.pop();
+
+                res(prefix, postfix, op);
+            }
+            operators.pop();
+        }
+
+        else if (ch == '*' || ch == '/' || ch == '+' || ch == '-') {
+            while (operators.size() > 0 && operators.peek() != '(' && prec(operators.peek()) >= prec(ch)) {
+                char op = operators.pop();
+
+                res(prefix, postfix, op);
+            }
+            operators.push(ch);
+        }
+    }
+
+    while (operators.size() > 0) {
+        char op = operators.pop();
+
+        res(prefix, postfix, op);
+    }
+    
+    System.out.println(postfix.pop());
+    System.out.println(prefix.pop());
+ }
+}

@@ -1,0 +1,58 @@
+class Solution {
+    public int largestRectangleArea(int[] heights) {
+        int[] diff = new int[heights.length];
+        int[] stl = nextSmallestLeft(heights);
+        int[] str = nextSmallestRight(heights);
+        int area = 0;
+        
+        for (int i = 0; i < diff.length; i++) {
+            diff[i] = str[i] - stl[i] - 1;
+            int newArea = (diff[i]) * (heights[i]);
+            
+            if (newArea > area) {
+                area = newArea;
+            }
+        }
+        return area;
+    }
+    
+    public int[] nextSmallestLeft(int[] heights) {
+        Stack<Integer> stk = new Stack<>();
+        int[] ans = new int[heights.length];
+        Arrays.fill(ans, -1);
+        
+        for (int i = 0; i < heights.length; i++) {
+            while (stk.size() > 0 && heights[i] <= heights[stk.peek()]) {
+                stk.pop();
+            }
+            
+            if (stk.size() > 0) {
+                ans[i] = stk.peek();
+            }
+            
+            stk.push(i);
+        }
+        
+        return ans;
+    }
+    
+    public int[] nextSmallestRight(int[] heights) {
+        Stack<Integer> stk = new Stack<>();
+        int[] ans = new int[heights.length];
+        Arrays.fill(ans, ans.length);
+        
+        for (int i = heights.length - 1; i >= 0; i--) {
+            while (stk.size() > 0 && heights[i] <= heights[stk.peek()]) {
+                stk.pop();
+            }
+            
+            if (stk.size() > 0) {
+                ans[i] = stk.peek();
+            }
+            
+            stk.push(i);
+        }
+        
+        return ans;
+    }
+}

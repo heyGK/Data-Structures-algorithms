@@ -1,0 +1,40 @@
+import java.io.*;
+import java.util.*;
+import java.util.List;
+import java.util.Collections;
+
+public class Main
+{
+	public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        String str = scn.next();
+
+        ArrayList<String> ans = getss(str, 0);
+        System.out.println(ans);
+    }
+
+    public static ArrayList<String> getss(String str, int idx) {
+
+        if (idx == str.length())
+        {
+            ArrayList<String> res = new ArrayList<>();
+            res.add("");
+            return res;
+        }
+
+        ArrayList<String> ans = getss(str, idx + 1);
+
+        ArrayList<String> myans = new ArrayList<>();
+        for (String smallsub : ans)
+        {
+            myans.add(smallsub);
+        }
+        
+        for (String smallsub : ans)
+        {
+            myans.add(str.charAt(idx) + smallsub);
+        }
+
+        return myans;
+    }
+}

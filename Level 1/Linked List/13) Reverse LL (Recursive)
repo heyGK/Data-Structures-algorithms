@@ -1,0 +1,71 @@
+private void displayReverseHelper(Node node){
+      if(node == null){
+        return;
+      }
+      displayReverseHelper(node.next);
+      System.out.print(node.data + " ");
+    }
+
+    public void displayReverse(){
+      displayReverseHelper(head);
+      System.out.println();
+    }
+
+  //   static Node right;
+  //   public static void swap(Node right, Node left)
+  //   {
+  //     int temp = right.data;
+  //     right.data = left.data;
+  //     left.data = temp;
+  //   }
+  //   private void reversePRHelper(Node node, int counter){
+  //     // write your code here
+  //     if(node == null)
+  //     {
+  //       return;
+  //     }
+
+  //     reversePRHelper(node.next, counter + 1);
+
+  //     if (counter < size / 2)
+  //     {
+  //       swap(node, right);
+  //     }
+
+  //     right = right.next;
+  //   }
+
+  //   public void reversePR(){
+  //     // write your code here
+  //     Node left = head;
+  //     right = head;
+  //     int counter = 0;
+
+  //     reversePRHelper(left, counter);
+  //   }
+  // }
+
+    private void reversePRHelper(Node node){
+      // write your code here
+      if(node.next == null)
+      {
+        return;
+      }
+
+      reversePRHelper(node.next);
+
+      node.next.next = node;
+    }
+
+    public void reversePR(){
+      // write your code here
+      Node left = head;
+      reversePRHelper(left);
+
+      Node temp = head;
+      head = tail;
+      tail = temp;
+
+      tail.next = null;
+    }
+  }

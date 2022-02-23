@@ -1,0 +1,78 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode() {}
+ *     ListNode(int val) { this.val = val; }
+ *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
+class Solution {
+    public ListNode mergeTwo (ListNode a, ListNode b) {
+        if (a == null) return b;
+        if (b == null) return a;
+        
+        ListNode res = new ListNode(-1);
+        ListNode head = res;
+        ListNode tail = res;
+        
+        while(a != null && b != null) {
+            if (a.val < b.val) {
+                tail.next = a;
+                a = a.next;
+            }
+            else {
+                tail.next = b;
+                b = b.next;
+            }
+            
+            tail = tail.next;
+            res = res.next;
+        }
+        
+        if (a != null) {
+            tail.next = a;
+        }
+        
+        if (b != null) {
+            tail.next = b;
+        }
+        
+        head = head.next;
+        return head;
+    }
+    
+    public ListNode mid(ListNode head) {
+        ListNode slow = head;
+        ListNode fast = head;
+      
+
+        
+        while (fast.next != null && fast.next.next != null) {
+          
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+      
+        return slow;
+    }
+    
+    public ListNode helper(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        
+        ListNode mid = mid(head);
+        ListNode midAhead = mid.next;
+        mid.next = null;
+        
+        ListNode left = helper(head);
+        ListNode right = helper(midAhead);
+        
+        return mergeTwo(left, right);
+    }
+    public ListNode sortList(ListNode head) {
+       return helper(head);
+    }
+}

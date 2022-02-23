@@ -1,0 +1,85 @@
+import java.io.*;
+import java.util.*;
+
+public class Main{
+  
+public static int prec(char ch) {
+    if (ch == '*' || ch == '/') {
+        return 2;
+    }
+    if (ch == '+' || ch == '-') {
+        return 1;
+    }
+
+    return 0;
+}
+
+public static int res(int a, int b, char op) {
+    if (op == '+') {
+        return a + b;
+    }
+    else if (op == '-') {
+        return a - b;
+    }
+    else if (op == '*') {
+        return a * b;
+    }
+    else if (op == '/') {
+        return a / b;
+    }
+    return 0;
+}
+
+public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    String exp = br.readLine();
+
+    // code
+    Stack<Character> operators = new Stack<>();
+    Stack<Integer> operands = new Stack<>();
+
+    for (int i = 0; i < exp.length(); i++) {
+        char ch = exp.charAt(i);
+
+        if (ch >= '0' && ch <= '9') {
+            operands.push(ch - '0');
+        }
+
+        else if (ch == '(') {
+            operators.push(ch);
+        }
+
+        else if (ch == ')') {
+            while (operators.peek() != '(') {
+                int b = operands.pop();
+                int a = operands.pop();
+                char op = operators.pop();
+
+                operands.push(res(a, b, op));
+            }
+            operators.pop();
+        }
+
+        else if (ch == '*' || ch == '/' || ch == '+' || ch == '-') {
+            while (operators.size() > 0 && operators.peek() != '(' && prec(operators.peek()) >= prec(ch)) {
+                int b = operands.pop();
+                int a = operands.pop();
+                char op = operators.pop();
+
+                operands.push(res(a, b, op));
+            }
+            operators.push(ch);
+        }
+    }
+
+    while (operators.size() > 0) {
+        int b = operands.pop();
+        int a = operands.pop();
+        char op = operators.pop();
+
+        operands.push(res(a, b, op));
+    }
+    
+    System.out.println(operands.peek());
+ }
+}

@@ -1,0 +1,39 @@
+ public static Node Mnode;
+  public static int Mmax;
+
+  public static void main(String[] args) throws Exception {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    int n = Integer.parseInt(br.readLine());
+    int[] arr = new int[n];
+    String[] values = br.readLine().split(" ");
+    for (int i = 0; i < n; i++) {
+      arr[i] = Integer.parseInt(values[i]);
+    }
+
+    Node root = construct(arr);
+    // write your code here
+    Mmax = Integer.MIN_VALUE;
+    Mnode = root;
+    int ans = sum(root);
+
+    System.out.println(Mnode.data + "@" + Mmax);
+  }
+
+  public static int sum (Node root) {
+    if (root == null) {
+      return 0;
+    }
+
+    int currSum = 0;
+    for (Node child : root.children) {
+        currSum += sum(child);
+    }
+
+    currSum += root.data;
+    if (currSum > Mmax) {
+      Mmax = currSum;
+      Mnode = root;
+    }
+
+    return currSum;
+  }

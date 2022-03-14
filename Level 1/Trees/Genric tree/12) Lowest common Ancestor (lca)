@@ -1,0 +1,33 @@
+public static ArrayList<Integer> nodeToRootPath(Node node, int data) {
+    if (node.data == data) {
+      ArrayList<Integer> path = new ArrayList<>();
+      path.add(node.data);
+      return path;
+    }
+
+    for (Node child : node.children) {
+      ArrayList<Integer> ptc = nodeToRootPath(child, data);
+      if (ptc.size() > 0) {
+        ptc.add(node.data);
+        return ptc;
+      }
+    }
+
+    return new ArrayList<>();
+  }
+
+  public static int lca(Node node, int d1, int d2) {
+    // write your code here
+    ArrayList<Integer> n2rp1 = nodeToRootPath(node, d1);
+    ArrayList<Integer> n2rp2 = nodeToRootPath(node, d2);
+
+    int i = n2rp1.size() - 1;
+    int j = n2rp2.size() - 1;
+
+    while (i >= 0 && j >= 0 && n2rp1.get(i) == n2rp2.get(j)) {
+      i--;
+      j--;
+    }
+
+    return n2rp2.get(j + 1);
+  }

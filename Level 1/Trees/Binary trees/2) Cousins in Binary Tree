@@ -1,0 +1,72 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    TreeNode parx;
+    TreeNode pary;
+    int levelx;
+    int levely;
+    
+    public void levelOrder(TreeNode root, int x, int y) {
+        Queue<TreeNode> que = new ArrayDeque();
+        que.add(root);
+        int level = 1;
+        
+        while (que.size() > 0) {
+            int size = que.size();
+            while (size-- > 0) {
+                TreeNode rem = que.remove();
+                if (rem.left != null) {
+                    que.add(rem.left);
+                    if (rem.left.val == x) {
+                        parx = rem;
+                        levelx = level + 1;
+                    }
+                    if (rem.left.val == y) {
+                        pary = rem;
+                        levely = level + 1;
+                    }
+                }
+                if (rem.right != null) {
+                    que.add(rem.right);
+                    if (rem.right.val == x) {
+                        parx = rem;
+                        levelx = level + 1;
+                    }
+                    if (rem.right.val == y) {
+                        pary = rem;
+                        levely = level + 1;
+                    }
+                }
+            }
+            level++;
+        }
+    }
+    
+    public boolean isCousins(TreeNode root, int x, int y) {
+        if (x == root.val || y == root.val) {
+            return false;
+        }
+        
+        levelOrder(root, x, y);
+        
+        if (parx != pary && levelx == levely) {
+            return true;
+        }
+        
+        return false;
+    }
+
+}

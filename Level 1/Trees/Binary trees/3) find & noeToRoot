@@ -1,0 +1,49 @@
+ public static boolean find(Node node, int data){
+    // write your code here
+    if (node == null) {
+      return false;
+    }
+
+    if (node.data == data) {
+      return true;
+    }
+
+    boolean left = find(node.left, data);
+    if (left == true) {
+      return true;
+    }
+
+    boolean right = find(node.right, data);
+    if (right == true) {
+      return true;
+    }
+    
+    return false;
+  }
+
+  public static ArrayList<Integer> nodeToRootPath(Node node, int data){
+    // write your code here
+    if (node == null) {
+      return new ArrayList();
+    }
+    
+    if (node.data == data) {
+      ArrayList<Integer> arr = new ArrayList<Integer>();
+      arr.add(node.data);
+      return arr;
+    }
+
+    ArrayList<Integer> left = nodeToRootPath(node.left, data);
+    if (left.size() > 0) {
+      left.add(node.data);
+      return left;
+    }
+
+    ArrayList<Integer> right = nodeToRootPath(node.right, data);
+    if (right.size() > 0) {
+      right.add(node.data);
+      return right;
+    }
+
+    return new ArrayList();
+  }

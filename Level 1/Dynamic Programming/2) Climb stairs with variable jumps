@@ -1,0 +1,39 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static int climb(int n, int[] jumps, int idx, int[] dp) {
+        if (idx == n) {
+            return dp[idx] = 1;
+        }
+
+        if (dp[idx] != -1) {
+            return dp[idx];
+        }
+
+        int ans = 0;
+        for (int i = 1; i <= jumps[idx]; i++) {
+            if (i + idx <= n) {
+                ans += climb(n, jumps, idx + i, dp);
+            }
+        }
+
+        return dp[idx] = ans;
+    }
+
+    public static void main(String[] args) throws Exception {
+        // write your code here
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] jumps = new int[n];
+        for (int i = 0; i < jumps.length; i++) {
+            jumps[i] = scn.nextInt();
+        }
+
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, -1);
+        int res = climb(n, jumps, 0, dp);
+        System.out.println(res);
+    }
+
+}

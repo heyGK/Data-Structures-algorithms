@@ -1,0 +1,45 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+    public static int minCost(int[][] maze, int n, int m, int r, int c, int[][] dp) {
+        if (r == n - 1 && c == m - 1) {
+            return dp[r][c] = maze[r][c];
+        }
+
+        if (dp[r][c] != Integer.MAX_VALUE) {
+            return dp[r][c];
+        }
+
+        int ans = Integer.MAX_VALUE;
+        if (r + 1 <= n - 1) {
+            ans = Math.min(ans, minCost(maze, n, m, r + 1, c, dp));
+        }
+        if (c + 1 <= m - 1) {
+            ans = Math.min(ans, minCost(maze, n, m, r, c + 1, dp));
+        } 
+
+        return dp[r][c] = ans + maze[r][c];
+    }
+    public static void main(String[] args) throws Exception {
+        // write your code here
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int m = scn.nextInt();
+
+        int[][] maze = new int[n][m];
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[0].length; j++) {
+                maze[i][j] = scn.nextInt();
+            }
+        }
+
+        int[][] dp = new int[n][m];
+        for (int i = 0; i < n; i++) {
+            Arrays.fill(dp[i], Integer.MAX_VALUE);
+        }
+        int cost = minCost(maze, n, m, 0, 0, dp);
+        System.out.println(cost);
+    }
+
+}

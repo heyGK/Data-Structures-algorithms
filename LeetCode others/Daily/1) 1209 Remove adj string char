@@ -1,0 +1,38 @@
+class Solution {
+    public class Pair {
+        char c;
+        int count;
+    }
+    public String removeDuplicates(String s, int k) {
+        Stack<Pair> stk = new Stack<>();
+        int i = 0;
+        
+        while (i < s.length()) {
+            char rem = s.charAt(i);
+            if (!stk.isEmpty() && stk.peek().c == rem) {
+                stk.peek().count++;
+            }
+            else {
+                Pair p = new Pair();
+                p.c = rem;
+                p.count = 1;
+                stk.push(p);
+            }
+            
+            if (stk.peek().count == k) {
+                stk.pop();
+            }
+            i++;
+        }
+        
+        StringBuilder res = new StringBuilder();
+        while(stk.size() > 0) {
+            Pair p = stk.pop();
+            while (p.count-- > 0) {
+                res.append(p.c);
+            }
+        }
+         
+        return res.reverse().toString();
+    }
+}

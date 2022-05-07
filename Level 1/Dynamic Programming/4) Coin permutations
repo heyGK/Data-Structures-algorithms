@@ -1,0 +1,92 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+    public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] coins = new int[n];
+        for (int i = 0; i < n; i++) {
+            coins[i] = scn.nextInt();
+        }
+        int amt = scn.nextInt();
+        
+        int[] dp = new int[amt + 1];
+        int res = coinChange(n, coins, amt, dp);
+        System.out.println(res);
+    }
+
+    public static int coinChange(int n, int[] coins, int amt, int[] dp) {
+        if (amt == 0) {
+            dp[amt] = 1;
+        }
+
+        if (dp[amt] != 0) {
+            return dp[amt];
+        }
+
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            if (amt - coins[i] >= 0) {
+                ans += coinChange(n, coins, amt - coins[i], dp);
+            }
+        }
+
+        return dp[amt] = ans;
+    }
+}
+
+
+ -------------------TABULATION -------------------
+ 
+ public static void main(String[] args) throws Exception {
+        Scanner scn = new Scanner(System.in);
+        int n = scn.nextInt();
+        int[] coins = new int[n];
+        for (int i = 0; i < n; i++) {
+            coins[i] = scn.nextInt();
+        }
+        int amt = scn.nextInt();
+        
+        int[] dp = new int[amt + 1];
+       // int res = coinChange(n, coins, amt, dp);
+       // System.out.println(res);
+
+        for (int a = 0; a < dp.length; a++) {
+             if (a == 0) {
+            dp[a] = 1;
+            continue;
+        }
+
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            if (a - coins[i] >= 0) {
+                ans += dp[a - coins[i]];
+            }
+        }
+
+        dp[a] = ans;
+        }
+
+        System.out.println(dp[amt]);
+    }
+
+    public static int coinChange(int n, int[] coins, int amt, int[] dp) {
+        if (amt == 0) {
+            dp[amt] = 1;
+        }
+
+        if (dp[amt] != 0) {
+            return dp[amt];
+        }
+
+        int ans = 0;
+        for (int i = 0; i < n; i++) {
+            if (amt - coins[i] >= 0) {
+                ans += coinChange(n, coins, amt - coins[i], dp);
+            }
+        }
+
+        return dp[amt] = ans;
+    }

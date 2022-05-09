@@ -1,0 +1,24 @@
+import java.io.*;
+import java.util.*;
+
+public class Main{
+
+public static void main(String[] args) throws Exception {
+    // write your code here
+    Scanner scn = new Scanner (System.in);
+    int n = scn.nextInt();
+
+    long space = 1;
+    long building = 1;
+
+    for (int i = 1; i < n; i++) {
+        long ns = space + building;
+        long nb = space;
+
+        space = ns;
+        building = nb;
+    }
+    System.out.println((space + building) * (space + building));
+ }
+
+}

@@ -1,0 +1,52 @@
+class Solution {
+    static Long numberOfWays(int N) {
+        // code herelong long numberOfWays(long long N) {
+        //code here
+        long[] dp = new long[N + 1];
+        return dpop(N, dp);
+    }
+    
+    static long dpop(int N, long[] dp) {
+        if (N == 0) {
+            return dp[N] = 1;
+        }
+        
+        if (dp[N] != 0) {
+            return dp[N];
+        }
+        
+        long ht = 0;
+        long vt = 0;
+        if (N - 2 >= 0) {
+            ht += dpop(N - 2, dp) % 1000000007;
+        } 
+        
+        if (N - 1 >= 0) {
+            vt += dpop(N - 1, dp) % 1000000007;
+        }
+        
+        return dp[N] = (ht + vt) % 1000000007;
+    }
+    
+};
+
+---------O(1)SPACE-------------
+class Solution {
+    static Long numberOfWays(int N) {
+        // code herelong long numberOfWays(long long N) {
+        //code here
+        
+        long prev = 1;
+        long prevofprev = 1;
+        for (int i = 2; i <= N; i++) {
+            long h = 0, v = 0;
+            h = prevofprev;
+            v = prev;
+            
+            long currAns = (h + v) % 1000000007;
+            prevofprev = prev;
+            prev = currAns % 1000000007;
+        }
+        return prev;
+    }
+};

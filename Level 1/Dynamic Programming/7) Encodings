@@ -11,7 +11,7 @@ if (idx == str.length()) {
             ans += count(str, idx + 1, dp);
         }
         
-        if (idx + 1 < str.length() && (str.charAt(idx) == '1' || str.charAt(idx) == '2') && str.charAt(idx + 1) <= '6') {
+        if (idx + 1 < str.length() && (str.charAt(idx) == '1' || str.charAt(idx) == '2' && str.charAt(idx + 1) <= '6')) {
             ans += count(str, idx + 2, dp);
         }
         
@@ -37,7 +37,7 @@ if (idx == str.length()) {
                 ans += dp[idx + 1];
             }
             
-            if (idx + 1 < str.length() && (str.charAt(idx) == '1' || str.charAt(idx) == '2') && str.charAt(idx + 1) <= '6') {
+            if (idx + 1 < str.length() && (str.charAt(idx) == '1' || str.charAt(idx) == '2' && str.charAt(idx + 1) <= '6')) {
                 ans += dp[idx + 2];
             }
             

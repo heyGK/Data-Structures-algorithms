@@ -1,0 +1,61 @@
+--------TABULATION-------
+class Solution {
+    public int maxProfit(int[] prices) {
+        int n = prices.length;
+        int[][] dp = new int[n + 1][2];
+        
+        for (int idx = n; idx >= 0; idx--) {
+            for (int flag = 0; flag < 2; flag++) {
+                if (idx == n) {
+                    dp[idx][flag] = 0;
+                    continue;
+                }
+                
+                if (flag == 0) {
+                    int incBuy = -prices[idx] + dp[idx + 1][1];
+                    int excBuy = dp[idx + 1][0];
+                    dp[idx][flag] = Math.max(incBuy, excBuy);
+                }
+
+                else {
+                    int incSell = prices[idx] + dp[idx + 1][0];
+                    int excSell = dp[idx + 1][1];
+                    dp[idx][flag] = Math.max(incSell, excSell);
+                }
+            }
+        }
+        return dp[0][0];
+    }
+    
+}
+
+O(1)SPACE
+class Solution {
+    public int maxProfit(int[] prices) {
+        int[] prev = new int[2];
+        for (int idx = prices.length; idx >= 0; idx--) {
+            int[] curr = new int[2];
+            for (int flag = 0; flag < 2; flag++) {
+                if (idx == prices.length) {
+                    curr[flag] = 0;
+                    continue;
+                }
+                
+                if (flag == 0) {
+                    int incBuy = -prices[idx] + prev[1];
+                    int excBuy = prev[0];
+                    curr[flag] = Math.max(incBuy, excBuy);
+                }
+
+                else {
+                    int incSell = prices[idx] + prev[0];
+                    int excSell = prev[1];
+                    curr[flag] = Math.max(incSell, excSell);
+                }
+            }
+            prev = curr;
+        }
+        return prev[0];
+    }
+    
+}

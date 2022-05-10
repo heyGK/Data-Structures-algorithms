@@ -1,0 +1,47 @@
+ public int another (String s) {
+        int[][] dp = new int[3][s.length() + 1];
+        for(int i = 1; i < dp[0].length; i++) {
+            char ch = s.charAt(i - 1);
+            
+            if (ch == 'a') {
+                dp[0][i] = (2*dp[0][i - 1]%1000000007) + 1 % 1000000007;
+                dp[1][i] = dp[1][i - 1];
+                dp[2][i] = dp[2][i - 1];
+            }
+            else if (ch == 'b') {
+                dp[0][i] = dp[0][i - 1];
+                dp[1][i] = (2*dp[1][i - 1]%1000000007 + dp[0][i]) % 1000000007;
+                dp[2][i] = dp[2][i - 1];
+            }
+            else if (ch == 'c') {
+                dp[0][i] = dp[0][i - 1];
+                dp[1][i] = dp[1][i - 1];
+                dp[2][i] = (2*dp[2][i - 1]%1000000007 + dp[1][i]) % 1000000007;
+            }
+        }
+        return dp[2][s.length()] % 1000000007;
+    }
+    
+    
+    ------------O(1)SPACE-------------
+     public int fun(String s)
+    {
+        Write your code here
+        int a = 0;
+        int ab = 0;
+        int abc = 0;
+        
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            if (ch == 'a') {
+                a = (2*a%1000000007 + 1) % 1000000007;
+            }
+            if (ch == 'b') {
+                ab = (2*ab%1000000007 + a) % 1000000007;
+            }
+            if (ch == 'c') {
+                abc = (2*abc%1000000007 + ab) % 1000000007;
+            }
+        }
+        return abc % 1000000007;
+    }

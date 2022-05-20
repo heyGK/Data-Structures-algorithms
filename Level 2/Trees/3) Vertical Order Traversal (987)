@@ -1,0 +1,90 @@
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public class Pair implements Comparable<Pair> {
+        int horizontal;
+        int level;
+        TreeNode node;
+        
+        Pair (int horizontal, int level, TreeNode node) {
+            this.horizontal = horizontal;
+            this.level = level;
+            this.node = node;
+        }
+        
+        public int compareTo (Pair other) {
+            if (this.level == other.level) {
+                return this.node.val - other.node.val;
+            }
+            else {
+                return this.level - other.level;
+            }
+        }
+    }
+    
+    public List<List<Integer>> verticalTraversal(TreeNode root) {
+        Queue<Pair> que = new ArrayDeque<>();
+        que.add(new Pair(0, 0, root));
+        
+        HashMap<Integer, ArrayList<Pair>> map = new HashMap<>();
+        
+        int leftV = 0;
+        int rightV = 0;
+        
+        while (que.size() > 0) {
+            Pair rem = que.remove();
+            
+            if (rem.horizontal < leftV) {
+                leftV = rem.horizontal;
+            }
+            if (rem.horizontal > rightV) {
+                rightV = rem.horizontal;
+            }
+            
+            if (map.containsKey(rem.horizontal) == false) {
+                map.put(rem.horizontal, new ArrayList<>());
+                map.get(rem.horizontal).add(rem);
+            }
+            else {
+                map.get(rem.horizontal).add(rem);
+            }
+            
+            if (rem.node.left != null) {
+                que.add(new Pair(rem.horizontal - 1, rem.level + 1, rem.node.left));
+            }
+            
+            if (rem.node.right != null) {
+                que.add(new Pair(rem.horizontal + 1, rem.level + 1, rem.node.right));
+            }
+        }
+        
+        List<List<Integer>> ans = new ArrayList<>();
+        for (int i = leftV; i <= rightV; i++) {
+            ArrayList<Integer> res = new ArrayList<>();
+            ArrayList<Pair> unsorted = map.get(i);
+            
+            Collections.sort(unsorted);
+            
+            for (Pair p : unsorted) {
+                res.add(p.node.val);
+            }
+            
+            ans.add(res);
+        }
+        
+        return ans;
+    }
+}

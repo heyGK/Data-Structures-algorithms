@@ -1,0 +1,40 @@
+class Tree
+{
+    static int val = 0;
+    public static void getDiag(Node root, int diagonal, HashMap<Integer, ArrayList<Integer>> map) {
+        if (root == null) {
+            return;
+        }
+        if (val < diagonal) {
+            val = diagonal;
+        }
+        
+        if (map.containsKey(diagonal) == false) {
+            map.put(diagonal, new ArrayList<Integer>());
+            map.get(diagonal).add(root.data);
+        }
+        else {
+            map.get(diagonal).add(root.data);
+        }
+        
+        getDiag(root.left, diagonal + 1, map);
+        getDiag(root.right, diagonal, map);
+    }
+    
+     public ArrayList<Integer> diagonal(Node root)
+      {
+           //add your code here.
+           HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+           getDiag(root, 0, map);
+           ArrayList<Integer> res = new ArrayList<>();
+           
+           for (int i = 0; i <= val; i++) {
+               ArrayList<Integer> ans = map.get(i);
+                if (ans != null) {
+                    res.addAll(ans);
+                }
+           }
+           
+           return res;
+      }
+}

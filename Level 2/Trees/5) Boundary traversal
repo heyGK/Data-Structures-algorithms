@@ -1,0 +1,86 @@
+class Solution
+{
+    void leftMost(Node node, ArrayList<Integer> left) {
+        if (node == null) {
+            return;
+        }    
+        
+        if (node.left == null && node.right == null) {
+            return;
+        }
+        
+        left.add(node.data);
+        if (node.left != null) {
+            leftMost(node.left, left);
+        }
+        else {
+            leftMost(node.right, left);
+        }
+        
+        return;        
+    }
+    
+    void leafNode (Node node, ArrayList<Integer> middle) {
+        if (node == null) {
+            return;
+        }
+        
+        if (node.left == null && node.right == null) {
+            middle.add(node.data);
+            return;
+        }
+        
+        leafNode(node.left, middle);
+        leafNode(node.right, middle);
+    
+        return;
+    }
+    
+    void rightMost(Node node, ArrayList<Integer> right) {
+        if (node == null) {
+            return;
+        }
+        
+        if (node.right == null && node.left == null) {
+            return;
+        }
+    
+        if (node.right != null) {
+            rightMost(node.right, right);
+        }
+        else {
+            rightMost(node.left, right);
+        }
+        right.add(node.data);
+        
+        return;
+    }
+    
+	ArrayList <Integer> boundary(Node node)
+	{
+	    ArrayList<Integer> ans = new ArrayList();
+	    if (node == null) {
+	        return ans;
+	    }
+	    
+	    ans.add(node.data);
+	    if (node.left == null && node.right == null) {
+	        return ans;
+	    }
+	    
+	    ArrayList<Integer> ln = new ArrayList<>();
+	    leftMost(node.left, ln);
+	    
+	    ArrayList<Integer> leaf = new ArrayList<>();
+	    leafNode(node, leaf);
+	    
+	    ArrayList<Integer> right = new ArrayList<>();
+	    rightMost(node.right, right);
+	    
+	    ans.addAll(ln);
+	    ans.addAll(leaf);
+	    ans.addAll(right);
+	    
+	    return ans;
+	}
+}

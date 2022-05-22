@@ -1,0 +1,32 @@
+class Solution {
+    int leftSize = 0;
+    int rightSize = 0;
+    public int size (TreeNode root, int x){
+        if (root == null) {
+            return 0;
+        }
+        
+        int ls = size(root.left, x);
+        int rs = size(root.right, x);
+        if (root.val == x) {
+            leftSize = ls;
+            rightSize = rs;
+        }
+        
+        return ls + rs + 1;
+    }
+    
+    public boolean btreeGameWinningMove(TreeNode root, int n, int x) {
+        int size = size(root, x);
+        
+        int remainingSize = n - (leftSize + rightSize + 1);
+        
+        int compare = Math.max(remainingSize, Math.max(leftSize, rightSize));
+        
+        if (compare > n/2) {
+            return true;
+        }
+        
+        return false;
+    }
+}

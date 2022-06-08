@@ -1,0 +1,31 @@
+class Solution {
+    public int countNodes(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        
+        int lh = 0;
+        TreeNode left = root.left;
+        while (left != null) {
+            left = left.left;
+            lh++;
+        }
+        
+        int rh = 0;
+         TreeNode right = root.right;
+        while (right != null) {
+            right = right.right;
+            rh++;
+        }
+        
+        if (lh == rh) {
+            double ht = (lh + 1)*(1.0);
+            double ans = Math.pow(2, ht);
+            return (int)(ans - 1);
+        }
+        
+        else {
+            return countNodes(root.left) + countNodes(root.right) + 1;
+        }
+    }
+}

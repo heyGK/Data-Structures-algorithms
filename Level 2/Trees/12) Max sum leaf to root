@@ -1,0 +1,20 @@
+class Solution
+{
+    public static int maxPathSum(Node root)
+    {
+        //code here
+        int left = 0;
+        int right = 0;
+        if (root.left != null) {
+            left = maxPathSum(root.left);
+        }
+        
+        if (root.right != null) {
+            right = maxPathSum(root.right);
+        }
+    
+        int val = Math.max(left, right) + root.data;
+        
+        return val;
+    }
+}

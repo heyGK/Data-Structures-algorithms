@@ -1,0 +1,27 @@
+class Solution {
+    int max = Integer.MIN_VALUE;
+    public int maxPathSum(TreeNode root) {
+        getMax(root);
+        
+        return max;
+    }
+    
+    public int getMax(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+        
+        int left = getMax(root.left);
+        int right = getMax(root.right);
+        
+        int leftDash = Math.max(0, left);
+        int rightDash = Math.max(0, right);
+        
+        int newSum = leftDash + root.val + rightDash;
+        if (newSum > max) {
+            max = newSum;
+        }
+        
+        return Math.max(leftDash, rightDash) + root.val;
+    }
+}

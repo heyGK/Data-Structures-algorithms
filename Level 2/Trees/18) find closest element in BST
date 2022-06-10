@@ -1,0 +1,34 @@
+class Solution
+{
+    //Function to find the least absolute difference between any node
+    //value of the BST and the given integer.
+    static int closest;
+    static int minDiff(Node  root, int K) 
+    { 
+        // Write your code here
+        closest = Integer.MAX_VALUE;
+        helper(root, K);
+        return closest;
+    }
+    
+    public static void helper(Node root, int K) {
+        if (root == null) {
+            return;
+        }
+        
+        int diff = Math.abs(K - root.data);
+        if (diff < closest) {
+            closest = diff;
+        }
+        
+        if (root.data > K) {
+            helper(root.left, K);
+        }
+        else if(root.data < K) {
+            helper(root.right, K);
+        }
+        else {
+            return;
+        }
+    }
+}

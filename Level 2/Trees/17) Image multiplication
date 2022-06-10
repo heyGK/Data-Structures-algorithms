@@ -1,0 +1,21 @@
+ class Solution {
+    long ans;
+    public long imgMultiply(Node root)
+    {
+        // code here
+        ans = (root.data * root.data) % 1000000007;
+        helper(root.left, root.right);
+        return ans % 1000000007;
+    }
+    
+    public void helper(Node n1, Node n2) {
+        if (n1 == null || n2 == null) {
+            return;
+        }
+        
+        ans += (n1.data * n2.data ) % 1000000007;
+        
+        helper(n1.left, n2.right);
+        helper(n1.right, n2.left);
+    }
+}

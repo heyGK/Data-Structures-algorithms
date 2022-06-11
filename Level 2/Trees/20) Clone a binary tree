@@ -1,0 +1,55 @@
+class Solution{
+    public Tree cloneTree(Tree tree){
+       // add code here.
+       duplicate(tree);
+       randoms(tree);
+       Tree newAns = removeDuplicates(tree);
+       
+       return newAns;
+     }
+     
+     public void duplicate(Tree tree) {
+         if (tree == null) {
+             return;
+         }
+         
+         duplicate(tree.left);
+         duplicate(tree.right);
+         
+         Tree duplicate = new Tree(tree.data);
+         duplicate.left = tree.left;
+         duplicate.right = tree.right;
+         tree.left = duplicate;
+     }
+     
+     public void randoms(Tree root) {
+         if (root == null) {
+             return;
+         }
+         
+         randoms(root.left.left);
+         randoms(root.right);
+         
+         if (root.random != null) {
+             root.left.random = root.random.left;
+         }
+         
+     }
+     
+     public Tree removeDuplicates(Tree root) {
+         if (root == null) {
+             return null;
+         }
+         
+         Tree leftDup = removeDuplicates(root.left.left);
+         Tree rightDup = removeDuplicates(root.right);
+         
+         Tree dup = root.left;
+         root.left = root.left.left;
+         
+         dup.left = leftDup;
+         dup.right = rightDup;
+         
+         return dup;
+     }
+}

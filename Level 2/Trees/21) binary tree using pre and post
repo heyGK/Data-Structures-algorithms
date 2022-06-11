@@ -1,0 +1,30 @@
+class Solution {
+    public TreeNode constructFromPrePost(int[] preorder, int[] postorder) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < postorder.length; i++) {
+            map.put(postorder[i], i);
+        }
+        
+        TreeNode res = helper(map, preorder, 0, preorder.length - 1, 0, postorder.length - 1);
+        
+        return res;
+    }
+    
+    public TreeNode helper(HashMap<Integer, Integer> map, int[] pre, int preLo, int preHi, int postLo, int postHi) {
+        if (preLo > preHi || postLo > postHi) {
+            return null;
+        }
+        
+        TreeNode node = new TreeNode(pre[preLo]);
+        
+        if (preLo + 1 <= preHi) {
+            int sidx = map.get(pre[preLo + 1]);
+            int lhs = sidx - postLo + 1;
+            
+            node.left = helper(map, pre, preLo + 1, preLo + lhs, postLo, sidx);
+            node.right = helper(map, pre, preLo + lhs + 1, preHi, sidx + 1, postHi - 1);
+        }
+        
+        return node;
+    }
+}

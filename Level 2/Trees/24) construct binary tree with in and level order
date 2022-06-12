@@ -1,0 +1,34 @@
+class GfG
+{
+    Node buildTree(int inord[], int level[])
+    {
+        //your code here
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < level.length; i++) {
+            map.put(level[i], i);
+        }
+        
+        Node res = helper(inord, map, 0, inord.length - 1);
+        
+        return res;
+    }
+    
+    Node helper(int[] inorder, HashMap<Integer, Integer> map, int lo, int hi) {
+        if (lo > hi) {
+            return null;
+        }
+        
+        int newMin = lo;
+        for (int i = lo; i <= hi; i++) {
+            if (map.get(inorder[i]) < map.get(inorder[newMin])) {
+                newMin = i;
+            }
+        }
+        
+        Node n = new Node(inorder[newMin]);
+        n.left = helper(inorder, map, lo, newMin - 1);
+        n.right = helper(inorder, map, newMin + 1, hi);
+        
+        return n;
+    }
+}

@@ -1,0 +1,95 @@
+class Solution {
+    public void flatten(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        
+        flatten(root.left);
+        flatten(root.right);
+        
+        TreeNode left = root.left;
+        
+        if (left != null) {
+            while(left.right != null) {
+                left = left.right;
+            }
+        }
+        else {
+            return;
+        }
+        
+        left.right = root.right;
+       
+        root.right = root.left;
+        
+        root.left = null;
+    }
+}
+
+
+--------------O(n)------------
+class Solution {
+    class Pair {
+        TreeNode head;
+        TreeNode tail;
+        
+        Pair() {
+            
+        }
+        
+        Pair (TreeNode head, TreeNode tail) {
+            this.head = head;
+            this.tail = tail;
+        }
+    }
+    
+    public void flatten(TreeNode root) {
+        if (root != null) {
+             helper(root);
+        }
+    }
+    
+    public Pair helper(TreeNode root) {
+        if (root.left != null && root.right != null) {
+            Pair lp = helper(root.left);
+            Pair rp = helper(root.right);
+            
+            Pair myP = new Pair();
+            
+            myP.head = root;
+            myP.head.left = null;
+            myP.head.right = lp.head;
+            lp.tail.right = rp.head;
+            myP.tail = rp.tail;
+            
+            return myP;
+        }
+        
+        else if (root.left != null) {
+            Pair lp = helper(root.left);
+            
+            Pair myP = new Pair();
+            
+            myP.head = root;
+            myP.head.left = null;
+            myP.head.right = lp.head;
+            myP.tail = lp.tail;
+            
+            return myP;
+        }
+        else if (root.right != null) {
+            Pair rp = helper(root.right);
+            
+            Pair myP = new Pair();
+            myP.head = root;
+            myP.head.left = null;
+            myP.head.right = rp.head;
+            myP.tail = rp.tail;
+            
+            return myP;
+        }
+        else {
+            return new Pair(root, root);
+        }
+    }
+}

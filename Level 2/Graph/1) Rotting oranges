@@ -1,0 +1,73 @@
+class Solution {
+    public class Pair {
+        int x;
+        int y;
+        int t;
+        
+        Pair(int x, int y, int t) {
+            this.x = x;
+            this.y = y;
+            this.t = t;
+        }
+    }
+    
+    public int orangesRotting(int[][] grid) {
+        Queue<Pair> oranges = new ArrayDeque();
+        int fresh = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 2) {
+                    oranges.add(new Pair(i, j, 0));
+                }
+                else if (grid[i][j] == 1) {
+                    fresh++;
+                }
+            }
+        }
+        
+        int time = 0;
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        while (oranges.size() > 0) {
+            Pair rem = oranges.remove();
+            
+            if (visited[rem.x][rem.y] == true) {
+                continue;
+            }
+            visited[rem.x][rem.y] = true;
+            
+            if (rem.t > time) {
+                time = rem.t;
+            }
+            
+            if (grid[rem.x][rem.y] == 1) {
+                fresh--;
+            }
+            
+            // add neighbours
+            addNeighbours(grid, visited, rem.x + 1, rem.y, oranges, rem.t + 1);
+            addNeighbours(grid, visited, rem.x - 1, rem.y, oranges, rem.t + 1);
+            addNeighbours(grid, visited, rem.x, rem.y + 1, oranges, rem.t + 1);
+            addNeighbours(grid, visited, rem.x, rem.y - 1, oranges, rem.t + 1);
+        }
+        if (fresh == 0) {
+            return time;
+        }
+        else {
+            return -1;
+        }
+    }
+    
+    public void addNeighbours(int[][] grid, boolean[][] visited, int x, int y, Queue<Pair> oranges, int t) {
+        if (x < 0 || y < 0 || x >= grid.length || y >= grid[0].length) {
+            return;
+        }
+        if (visited[x][y] == true) {
+            return;
+        }
+        else if (grid[x][y] == 0) {
+            return;
+        }
+        
+        oranges.add(new Pair(x, y, t));
+    }
+}

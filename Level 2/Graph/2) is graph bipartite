@@ -1,0 +1,50 @@
+class Solution {
+    public class Pair {
+        int v;
+        int color;
+        Pair(int v, int color) {
+            this.v = v;
+            this.color = color;
+        }
+    }
+    
+    public boolean isBipartite(int[][] graph) {
+        int[] visited = new int[graph.length];
+        for (int i = 0; i < graph.length; i++) {
+            if (visited[i] == 0) {
+                boolean isBipartite = traverse(graph, visited, i);
+                if (isBipartite == false) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    public boolean traverse(int[][] graph, int[] visited, int v) {
+        Queue<Pair> que = new ArrayDeque();
+        que.add(new Pair(v, 1));
+        
+        while (que.size() > 0) {
+            Pair rem = que.remove();
+            if (visited[rem.v] != 0) {
+                if (visited[rem.v] == rem.color) {
+                    continue;
+                }
+                else {
+                    return false;
+                }
+            }
+            
+            visited[rem.v] = rem.color;
+            for (int nbr : graph[rem.v]) {
+                if (visited[nbr] == 0) {
+                    que.add(new Pair(nbr, (rem.color) * (-1)));
+                }
+            }
+        }
+        
+        return true;
+    }
+}

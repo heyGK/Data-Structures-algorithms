@@ -1,0 +1,72 @@
+class Solution {
+    public class Pair {
+        int x;
+        int y;
+        boolean border;
+        
+        Pair (int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
+    }
+
+    public int[][] colorBorder(int[][] grid, int row, int col, int color) {
+        Queue<Pair> que = new ArrayDeque();
+        boolean[][] visited = new boolean[grid.length][grid[0].length];
+        ArrayList<Pair> arr = new ArrayList<>();
+        
+        int myColor = grid[row][col];
+        que.add(new Pair(row, col));
+        
+        while (que.size() > 0) {
+            Pair rem = que.remove();
+            
+            if (visited[rem.x][rem.y] == true) {
+                continue;
+            }
+            
+            visited[rem.x][rem.y] = true;
+            rem.border = isBorder(grid, rem.x, rem.y, myColor);
+            if (rem.border == true) {
+                arr.add(rem);
+            }
+            
+            addNeighbours(grid, visited, rem.x + 1, rem.y, myColor, que);
+            addNeighbours(grid, visited, rem.x - 1, rem.y, myColor, que);
+            addNeighbours(grid, visited, rem.x, rem.y + 1, myColor, que);
+            addNeighbours(grid, visited, rem.x, rem.y - 1, myColor, que);
+        }
+        
+        for (Pair pair : arr) {
+            grid[pair.x][pair.y] = color;
+        }
+        
+        return grid;
+    }
+    
+    public void addNeighbours(int[][] grid, boolean[][] visited, int x, int y, int color, Queue<Pair> que) {
+        if (x < 0 || y < 0 || x >= grid.length || y >= grid[0].length || visited[x][y] == true || grid[x][y] != color) {
+            return;
+        }
+        
+        que.add(new Pair(x, y));
+    }
+    
+    public boolean isBorder(int[][] grid, int x, int y, int color) {
+        if (x == 0 || x == grid.length - 1 || y == 0 || y == grid[0].length - 1) {
+            return true;
+        }
+        
+        else if (grid[x + 1][y] != color || grid[x - 1][y] != color) {
+            return true;    
+        }
+        
+        else if (grid[x][y + 1] != color || grid[x][y - 1] != color) {
+            return true;
+        }
+        
+        else {
+            return false;
+        }
+    }
+}

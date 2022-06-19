@@ -1,0 +1,78 @@
+class Solution {
+    public class Pair {
+        int x;
+        int y;
+        int level;
+        
+        Pair (int x, int y, int level) {
+            this.x = x;
+            this.y = y;
+            this.level = level;
+        }
+    }
+    
+    public int shortestBridge(int[][] grid) {
+        Queue<Pair> que = new ArrayDeque();
+        boolean[][] vis1 = new boolean[grid.length][grid[0].length];
+        boolean found = false;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if (grid[i][j] == 1) {
+                    dfs(que, grid, vis1, i, j);
+                    found = true;
+                }
+                if (found == true) {
+                    break;
+                }
+            }
+            if (found == true) {
+                break;
+            }
+        }
+        
+        boolean[][] vis2 = new boolean[grid.length][grid[0].length];
+        while (que.size() > 0) {
+            Pair rem = que.remove();
+            if (vis2[rem.x][rem.y] == true) {
+                continue;
+            }
+            
+            vis2[rem.x][rem.y] = true;
+            
+            if (grid[rem.x][rem.y] == 1) {
+                return rem.level - 1;
+            }
+            
+            addNeighbours(grid, vis2, que, rem.x + 1, rem.y, rem.level + 1);
+            addNeighbours(grid, vis2, que, rem.x - 1, rem.y, rem.level + 1);
+            addNeighbours(grid, vis2, que, rem.x, rem.y + 1, rem.level + 1);
+            addNeighbours(grid, vis2, que, rem.x, rem.y - 1, rem.level + 1);
+        }
+        
+        return -1;
+    }
+    
+    public void addNeighbours(int[][] grid, boolean[][] vis2, Queue<Pair> que, int x, int y, int level) {
+        if (x < 0 || y < 0 || x >= grid.length || y >= grid[0].length || vis2[x][y] == true || grid[x][y] == 2) {
+            return;
+        }
+        
+        que.add(new Pair(x, y, level));
+    }
+    
+    public void dfs (Queue<Pair> que, int[][] grid, boolean[][] vis1, int i, int j) {
+        if(i < 0 || i >= grid.length || j < 0 || j >= grid[0].length || vis1[i][j] == true || grid[i][j] == 0) {
+            return;
+        }
+        
+        vis1[i][j] = true;
+        que.add(new Pair(i, j, 0));
+        
+        dfs(que, grid, vis1, i + 1, j);
+        dfs(que, grid, vis1, i - 1, j);
+        dfs(que, grid, vis1, i, j + 1);
+        dfs(que, grid, vis1, i, j - 1);
+        
+        grid[i][j] = 2;
+    }
+}

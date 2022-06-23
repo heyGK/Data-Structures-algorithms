@@ -1,0 +1,58 @@
+class Solution
+{
+    //Function to find number of strongly connected components in the graph.
+    public int kosaraju(int V, ArrayList<ArrayList<Integer>> adj)
+    {
+        //code here
+        boolean[] visited = new boolean[V];
+        Stack<Integer> stk = new Stack<>();
+        for(int i = 0; i < V; i++) {
+            if (!visited[i]) {
+                dfs1(i, stk, adj, visited);
+            }
+        }
+        
+        ArrayList<ArrayList<Integer>> transpose = new ArrayList<>();
+        for (int i = 0; i < V; i++) {
+            transpose.add(new ArrayList<Integer>());
+        }
+        
+        for (int i = 0; i < V; i++) {
+            for (int j : adj.get(i)) {
+                transpose.get(j).add(i);
+            }
+        }
+        
+        boolean[] vis2 = new boolean[V];
+        int count = 0;
+        while (stk.size() > 0) {
+            int v = stk.pop();
+            if (!vis2[v]) {
+                dfs2(v, transpose, vis2);
+                count++;
+            }
+        }
+        
+        return count;
+    }
+    
+    public void dfs1 (int V, Stack<Integer> stk, ArrayList<ArrayList<Integer>> adj, boolean[] visited) {
+        visited[V] = true;
+        for (int n : adj.get(V)) {
+            if (!visited[n]) {
+                dfs1(n, stk, adj, visited);
+            }
+        }
+        
+        stk.push(V);
+    }
+    
+    public void dfs2 (int V, ArrayList<ArrayList<Integer>> transpose, boolean[] vis2) {
+        vis2[V] = true;
+        for (int n : transpose.get(V)) {
+            if (!vis2[n]) {
+                dfs2 (n, transpose, vis2);
+            }
+        }
+    }
+}

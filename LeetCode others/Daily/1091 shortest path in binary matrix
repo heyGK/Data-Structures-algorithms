@@ -1,0 +1,60 @@
+class Solution {
+    public class Pair implements Comparable<Pair> {
+        int x; 
+        int y;
+        int d;
+        
+        Pair (int x, int y, int d) {
+            this.x = x;
+            this.y = y;
+            this.d = d;
+        }
+        
+        public int compareTo (Pair o) {
+            return this.d - o.d;
+        }
+    }
+    
+    public int shortestPathBinaryMatrix(int[][] grid) {
+        if (grid[0][0] == 1 || grid[grid.length - 1][grid.length - 1] == 1) {
+            return -1;
+        }
+        
+        PriorityQueue<Pair> pq = new PriorityQueue<>();
+        boolean[][] visited = new boolean[grid.length][grid.length];
+        pq.add(new Pair(0, 0, 0));
+        
+        while (pq.size() > 0) {
+            Pair rem = pq.remove();
+            
+            if (visited[rem.x][rem.y] == true) {
+                continue;
+            }
+            
+            visited[rem.x][rem.y] = true;
+            
+            if (rem.x == grid.length - 1 && rem.y == grid.length - 1) {
+                return rem.d + 1;
+            }
+            
+            addNeighbours(pq, grid, visited, rem.x + 1, rem.y, rem.d + 1);
+            addNeighbours(pq, grid, visited, rem.x, rem.y + 1, rem.d + 1);
+            addNeighbours(pq, grid, visited, rem.x - 1, rem.y, rem.d + 1);
+            addNeighbours(pq, grid, visited, rem.x, rem.y - 1, rem.d + 1);
+            addNeighbours(pq, grid, visited, rem.x + 1, rem.y + 1, rem.d + 1);
+            addNeighbours(pq, grid, visited, rem.x + 1, rem.y - 1, rem.d + 1);
+            addNeighbours(pq, grid, visited, rem.x - 1, rem.y + 1, rem.d + 1);
+            addNeighbours(pq, grid, visited, rem.x - 1, rem.y - 1, rem.d + 1);
+        }
+        
+        return -1;
+    }
+    
+    public void addNeighbours(PriorityQueue<Pair> pq, int[][] grid, boolean[][] visited, int x, int y, int d) {
+        if (x < 0 || y < 0 || x >= grid.length || y >= grid.length || visited[x][y] == true || grid[x][y] == 1) {
+            return;
+        }
+        
+        pq.add(new Pair(x, y, d));
+    }
+}

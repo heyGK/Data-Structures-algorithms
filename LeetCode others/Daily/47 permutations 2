@@ -1,0 +1,38 @@
+class Solution {
+    List<List<Integer>> ans = new ArrayList<>();
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        int n = nums.length;
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int a : nums) {
+            if (map.containsKey(a)) {
+                map.put(a, map.get(a) + 1);
+            }
+            else {
+                map.put(a, 1);
+            } 
+        }
+        
+        permi(n, nums, new ArrayList<Integer>(), map);
+        return ans;
+    }
+    
+    public void permi(int n, int[] nums, List<Integer> res, HashMap<Integer, Integer> map) {
+        if (res.size() == n) {
+            List<Integer> myans = new ArrayList<>(res);
+            ans.add(myans);
+            return;
+        }
+        
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            int count = entry.getValue();
+            int key = entry.getKey();
+            if (count > 0) {
+                res.add(key);
+                map.put(key, map.get(key) - 1);
+                permi(n, nums, res, map);
+                res.remove(res.size() - 1);
+                map.put(key, map.get(key) + 1);
+            }
+        }
+    }
+}

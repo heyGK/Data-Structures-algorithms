@@ -1,0 +1,54 @@
+class Solution {
+    public int findCircleNum(int[][] isConnected) {
+        int count = isConnected.length;
+        
+        parent = new int[count];
+        rank = new int[count];
+        for (int i = 0; i < count; i++) {
+            parent[i] = i;
+            rank[i] = 0;
+        }
+        
+        for (int i = 0; i < isConnected.length; i++) {
+            for (int j = i + 1; j < isConnected.length; j++) {
+                if (isConnected[i][j] == 1) {
+                    int l1 = find(i);
+                    int l2 = find(j);
+                    
+                    if (l1 != l2) {
+                        union(l1, l2);
+                        count--;
+                    }
+                }
+            }
+        }
+        
+        return count;
+    }
+    
+    int[] parent;
+    int[] rank;
+    
+    public int find(int x) {
+        if (parent[x] == x) {
+            return x;
+        }
+        else {
+            parent[x] = find(parent[x]);
+            return parent[x];
+        }
+    }
+    
+    public void union (int s1, int s2) {
+        if (rank[s1] < rank[s2]) {
+            parent[s1] = s2;
+        }
+        else if (rank[s1] > rank[s2]) {
+            parent[s2] = s1;
+        }
+        else {
+            parent[s1] = s2;
+            rank[s2]++;
+        }
+    }
+}

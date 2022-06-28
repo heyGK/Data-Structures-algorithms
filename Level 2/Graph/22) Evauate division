@@ -1,0 +1,79 @@
+class Solution {
+    public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
+        parent = new HashMap<>();
+        mult = new HashMap<>();
+        
+        for (List<String> eq : equations) {
+            addToDSU(eq.get(0));
+            addToDSU(eq.get(1));
+        }
+        
+        int i = 0;
+        for (List<String> eq : equations) {
+            String l0 = find(eq.get(0));
+            String l1 = find(eq.get(1));
+            
+            double m0 = mult.get(eq.get(0));
+            double m1 = mult.get(eq.get(1));
+            
+            parent.put(l0, l1);
+            mult.put(l0, (values[i] * m1) / m0);
+            
+            i++;
+        }
+        
+        double[] res = new double[queries.size()];
+        i = 0;
+        for (List<String> q : queries) {
+            String l1 = q.get(0);
+            String l2 = q.get(1);
+            
+            if (!parent.containsKey(l1) || !parent.containsKey(l2)) {
+                res[i] = -1;
+                i++;
+                continue;
+            }
+            
+            String q1 = find(l1);
+            String q2 = find(l2);
+            if (!q1.equals(q2)) {
+                res[i] = -1;
+                i++;
+                continue;
+            }
+            
+            double m1 = mult.get(l1);
+            double m2 = mult.get(l2);
+            
+            res[i] = m1 / m2;
+            i++;
+        }
+        
+        return res;
+    }
+    
+    HashMap<String, String> parent;
+    HashMap<String, Double> mult;
+    
+    void addToDSU(String x) {
+        if (parent.containsKey(x) == false) {
+            parent.put(x, x);
+            mult.put(x, 1.0);
+        }
+    }
+    
+    String find(String x) {
+        if (parent.get(x).equals(x)) {
+            return x;
+        }
+        else {
+            String currParent = parent.get(x);
+            String finalParent = find(currParent);
+            
+            parent.put(x, finalParent);
+            mult.put(x, mult.get(currParent)*mult.get(x));
+            
+            return finalParent;
+        }
+    }
+}

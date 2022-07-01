@@ -1,0 +1,37 @@
+class Solution {
+    public boolean canMeasureWater(int jug1Capacity, int jug2Capacity, int targetCapacity) {    
+         Queue<Integer> que = new ArrayDeque();  // will contain capacities of both jugs
+        que.add(0);
+         int combined = jug1Capacity + jug2Capacity;
+        HashSet<Integer> visited = new HashSet<>();  // will contain all the visited capacities
+        
+        while (que.size() > 0) {
+            int rem = que.remove();
+            if (visited.contains(rem)) {
+                continue;
+            }
+            visited.add(rem);
+            
+            if (rem == targetCapacity) {
+                return true;
+            }
+            
+            // 4 possible new states for a current state
+            
+            addNeighbours(que, visited, rem + jug1Capacity, combined);
+            addNeighbours(que, visited, rem + jug2Capacity, combined);
+            addNeighbours(que, visited, rem - jug1Capacity, combined);
+            addNeighbours(que, visited, rem - jug2Capacity, combined);
+        }
+        
+        return false;
+    }
+    
+    public void addNeighbours(Queue<Integer> que, HashSet<Integer> visited, int val, int combined) {
+        if (val > combined || val < 0 || visited.contains(val)) {
+            return;
+        }
+            
+        que.add(val);
+    }
+}

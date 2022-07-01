@@ -1,0 +1,77 @@
+class Solution {
+    public int numSimilarGroups(String[] strs) {
+        parent = new HashMap<>();
+        rank = new HashMap<>();
+        
+        for (String str : strs) {
+            parent.put(str, str);
+            rank.put(str, 1);
+        }
+        
+        for (int i = 0; i < strs.length; i++) {
+            for (int j = i + 1; j < strs.length; j++) {
+                String x1 = strs[i];
+                String x2 = strs[j];
+                
+                if (areSimilar(x1, x2)) {
+                    String l1 = find(x1);
+                    String l2 = find(x2);
+                    
+                    if (!l1.equals(l2)) {
+                        union(l1, l2);
+                    }
+                }
+            }
+        }
+        
+        int count = 0;
+        for (String key : parent.keySet()) {
+            if (parent.get(key).equals(key)) {
+                count++;
+            }
+        }
+        
+        return count;
+    }
+    
+    public boolean areSimilar(String x1, String x2) {
+        int res = 0;
+        for (int i = 0; i < x1.length(); i++) {
+            if (x1.charAt(i) != x2.charAt(i)) {
+                res++;
+            }
+        }
+        
+        return res <= 2;
+    }
+    
+    HashMap<String, String> parent;
+    HashMap<String, Integer> rank;
+    
+    public String find(String str) {
+        if (parent.get(str) == str) {
+            return str;
+        }
+        else {
+            String x = parent.get(str);
+            String pox = find(x);
+            
+            parent.put(x, pox);
+            
+            return pox;
+        }
+    }
+    
+    public void union(String s1, String s2) {
+        if (rank.get(s1) < rank.get(s2)) {
+            parent.put(s1, s2);
+        }
+        else if (rank.get(s1) > rank.get(s2)) {
+            parent.put(s2, s1);
+        }
+        else {
+            parent.put(s2, s1);
+            rank.put(s1, rank.get(s1) + 1);
+        }
+    }
+}

@@ -1,0 +1,28 @@
+class Solution {
+    public List<Integer> findSmallestSetOfVertices(int n, List<List<Integer>> edges) {
+        parent = new int[n];
+        List<Integer> res = new ArrayList<>();
+        for (int i = 0; i < parent.length; i++) {
+            parent[i] = i;
+        }
+        
+        for (int i = 0; i < edges.size(); i++) {
+            int v1 = edges.get(i).get(0);
+            int v2 = edges.get(i).get(1);
+            
+            parent[v2] = v1;
+        }
+        
+        for (int i = 0; i < parent.length; i++) {
+            if (parent[i] == i) {
+                res.add(i);
+            }
+        }
+        
+        return res;
+    }
+    
+    int[] parent;
+}
+
+// Or we can also return the elements with in degree = 0

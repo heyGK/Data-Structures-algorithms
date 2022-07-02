@@ -1,0 +1,38 @@
+class Solution {
+    public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
+        class Pair {
+            int m;
+            int t;
+            
+            Pair(int m, int t) {
+                this.m = m;
+                this.t = t;
+            }
+        }
+        
+        ArrayList<Integer>[] graph = new ArrayList[n];
+        for (int i = 0; i < graph.length; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        
+        for (int i = 0; i < manager.length; i++) {
+            if (manager[i] != -1)
+                graph[manager[i]].add(i);   // graph of managers managing employees
+        }
+        
+        Queue<Pair> que = new ArrayDeque();
+        que.add(new Pair(headID, 0));
+        int ans = 0;
+        while (que.size() > 0) {
+            Pair rem = que.remove();
+            
+            ans = Math.max(ans, rem.t);   // max time to inform leaf child
+            
+            for (int i : graph[rem.m]) {
+                que.add(new Pair(i, rem.t + informTime[rem.m]));   // adding inform time of manager to inform children
+            }
+        }
+        
+        return ans;
+    }
+}

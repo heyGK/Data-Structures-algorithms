@@ -1,42 +1,78 @@
 class Solution {
-   public int[] shortestAlternatingPaths(int n, int[][] red_edges, int[][] blue_edges) {
-        List<Integer>[] reds = new ArrayList[n], blues = new ArrayList[n];
-        for(int[] e : red_edges){
-            if(reds[e[0]] == null)
-                reds[e[0]] = new ArrayList<>();
-            reds[e[0]].add(e[1]);
+    public class Pair {
+        int v;
+        int color;
+        int d;
+        Pair(int v, int color, int d) {
+            this.v = v;
+            this.color = color;
+            this.d = d;
         }
-        for(int[] e : blue_edges){
-            if(blues[e[0]] == null)
-                blues[e[0]] = new ArrayList<>();
-            blues[e[0]].add(e[1]);
+    }
+    
+    public int[] shortestAlternatingPaths(int n, int[][] redEdges, int[][] blueEdges) {
+        ArrayList<Integer>[] redGraph = new ArrayList[n];
+        ArrayList<Integer>[] blueGraph = new ArrayList[n];
+        for (int[] e: redEdges) {
+            if (redGraph[e[0]] == null) {
+                redGraph[e[0]] = new ArrayList<>();
+                redGraph[e[0]].add(e[1]);
+            }
+            else {
+                redGraph[e[0]].add(e[1]);
+            }
         }
-        Queue<int[]> q = new LinkedList<>();
+        
+        for (int[] e : blueEdges) {
+            if (blueGraph[e[0]] == null) {
+                blueGraph[e[0]] = new ArrayList<>();
+                blueGraph[e[0]].add(e[1]);
+            }
+            else {
+                blueGraph[e[0]].add(e[1]);
+            }
+        }
+        
+        System.out.print(redGraph[0]);
+        
+        HashSet<String> visited = new HashSet<>();
+        Queue<Pair> que = new ArrayDeque();
+        que.add(new Pair(0, 0, 0));
         int[] res = new int[n];
         Arrays.fill(res, -1);
-        q.add(new int[]{0, 0});
-        int moves = 0;
-        Set<String> seen = new HashSet<>();
-        while(!q.isEmpty()){
-            int size = q.size();
-            for(int i = 0; i < size; i++){
-                int[] curr = q.remove();
-                String key = curr[0]+" "+curr[1];
-                if(seen.contains(key)) continue;
-                seen.add(key);
-                if(res[curr[0]] == -1)
-                    res[curr[0]] = moves;
-                if(curr[1] == 2 || curr[1] == 0)
-                    if(reds[curr[0]] != null)
-                        for(int child : reds[curr[0]])
-                            q.add(new int[]{child, 1});
-                if(curr[1] == 1 || curr[1] == 0)
-                    if(blues[curr[0]] != null)
-                        for(int child : blues[curr[0]])
-                            q.add(new int[]{child, 2});
+        
+        while (que.size() > 0) {
+            Pair rem = que.remove();
+            
+            String key = rem.v + " " + rem.color;
+            if (visited.contains(key)) {
+                continue;
             }
-            ++moves;
+            visited.add(key);
+            
+            if (res[rem.v] == -1) {
+                res[rem.v] = rem.d;
+            }
+            else if (res[rem.v] > rem.d) {
+                res[rem.v] = rem.d;
+            }
+            
+            if (rem.color == 2 || rem.color == 0) {
+                if (redGraph[rem.v] != null) {
+                    for (int i : redGraph[rem.v]) {
+                        que.add(new Pair(i, 1, rem.d + 1));
+                    }
+                }
+            }
+            if (rem.color == 1 || rem.color == 0) {
+                if (blueGraph[rem.v] != null) {
+                    for (int i : blueGraph[rem.v]) {
+                        que.add(new Pair(i, 2, rem.d + 1));
+                    }
+                }
+            }
         }
+        
         return res;
     }
 }

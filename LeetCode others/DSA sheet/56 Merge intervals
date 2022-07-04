@@ -1,0 +1,27 @@
+class Solution {
+    public int[][] merge(int[][] intervals) {
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
+        
+        List<int[]> ans = new ArrayList<>();
+        int[] newInterval = intervals[0];
+        for (int[] interval : intervals) {
+            if (interval[0] <= newInterval[1]) {
+                newInterval[1] = Math.max(newInterval[1], interval[1]);
+            }
+            else {
+                
+                ans.add(newInterval);
+                newInterval = interval;
+                
+            }
+        }
+        
+        ans.add(newInterval);
+        
+        return ans.toArray(new int[ans.size()][]);
+    }
+}

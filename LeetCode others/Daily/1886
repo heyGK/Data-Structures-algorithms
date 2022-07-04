@@ -1,0 +1,25 @@
+class Solution {
+    public boolean findRotation(int[][] mat, int[][] target) {
+        int n = mat.length;
+        boolean[] isFalse = new boolean[4];
+        Arrays.fill(isFalse, true);
+       for (int i = 0; i < mat.length; i++) {
+           for (int j = 0; j < mat.length; j++) {
+               if (mat[i][j] != target[i][j]) {
+                    isFalse[0] = false;
+               }
+               if (mat[i][j] != target[j][n - 1 - i]) {
+                   isFalse[1] = false;
+               }
+               if (mat[i][j] != target[n - 1 - i][n - 1 - j]) {
+                   isFalse[2] = false;
+               }
+               if (mat[i][j] != target[n - 1 - j][i]) {
+                   isFalse[3] = false;
+               }
+           }
+       }
+        
+        return isFalse[0] || isFalse[1] || isFalse[2] || isFalse[3];
+    }
+}

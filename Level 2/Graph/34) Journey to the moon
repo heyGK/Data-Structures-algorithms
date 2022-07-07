@@ -37,13 +37,14 @@ class Result {
         for (int i = 0; i < size.length; i++) {
             System.out.println(size[i]);
             if(parent[i] == i) {
-                // count += (long)size[i] * (n - size[i]);
-                result += sum*size[i];
-                sum += size[i];
+                result += size[i] * (n - size[i]);
+            
+                // result += sum*size[i];
+                // sum += size[i];
             }
         }
         
-        return result;
+        return result / 2;
     }
     
     static int[] parent;

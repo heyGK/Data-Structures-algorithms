@@ -1,0 +1,69 @@
+class Result {
+
+    /*
+     * Complete the 'journeyToMoon' function below.
+     *
+     * The function is expected to return an INTEGER.
+     * The function accepts following parameters:
+     *  1. INTEGER n
+     *  2. 2D_INTEGER_ARRAY astronaut
+     */
+
+    public static long journeyToMoon(int n, List<List<Integer>> astronaut) {
+    // Write your code here
+        parent = new int[n];
+        size = new int[n];
+        
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            size[i] = 1;
+        }
+        
+        for (List<Integer> l1 : astronaut) {
+            int i = l1.get(0);
+            int j = l1.get(1);
+            
+            int x1 = find(i);
+            int x2 = find(j);
+            
+            if (x1 != x2) {
+                union(x1, x2);
+            }
+        }
+        
+       
+        long result = 0;
+        int sum = 0;
+        for (int i = 0; i < size.length; i++) {
+            System.out.println(size[i]);
+            if(parent[i] == i) {
+                // count += (long)size[i] * (n - size[i]);
+                result += sum*size[i];
+                sum += size[i];
+            }
+        }
+        
+        return result;
+    }
+    
+    static int[] parent;
+    static int[] size;
+    
+    public static int find(int x) {
+        if (parent[x] != x) {
+            parent[x] = find(parent[x]);
+        }
+        return parent[x];
+    }
+    
+    public static void union(int s1, int s2) {
+        if (size[s1] > size[s2]) {
+            parent[s2] = s1;
+            size[s1] += size[s2];
+        }
+        else {
+            parent[s1] = s2;
+            size[s2] += size[s1];
+        }
+    }
+}

@@ -1,0 +1,65 @@
+class Solution {
+    public List<Boolean> areConnected(int n, int threshold, int[][] queries) {
+        parent = new int[n + 1];
+        rank = new int[n + 1];
+        ArrayList<Boolean> res = new ArrayList<>();
+        
+        for (int i = 0; i < parent.length; i++) {
+            parent[i] = i;
+            rank[i] = 0;
+        }
+        
+        for (int div = threshold + 1; div <= n; div++) {
+            for (int m = 1; div * m <= n; m++) {
+                union(div, div * m);
+            }
+        }
+        
+        for (int[] query : queries) {
+            int x = query[0];
+            int y = query[1];
+            
+            boolean flag = false;
+            if(find(x) == find(y)) {
+                flag = true;
+            }
+            
+            res.add(flag);
+        }
+        
+        return res;
+    }
+    
+    int[] parent;
+    int[] rank;
+    
+    int find(int x) {
+        if (parent[x] == x) {
+            return x;
+        }
+        else {
+            parent[x] = find(parent[x]);
+            return parent[x];
+        }
+    }
+    
+    void union(int x, int y) {
+        int m1 = find(x);
+        int m2 = find(y);
+        
+        if (m1 == m2) {
+            return;
+        }
+        
+        if (rank[m1] < rank[m2]) {
+            parent[m1] = m2;
+        }
+        else if (rank[m1] > rank[m2]) {
+            parent[m2] = m1;
+        }
+        else {
+            parent[m1] = m2;
+            rank[m2]++;
+        }
+    }
+}

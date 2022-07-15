@@ -1,0 +1,25 @@
+class Solution {
+    
+    // Moore voting algo
+    public int majorityElement(int[] nums) {
+        int count = 0;
+        int majority = 0;
+        
+        for (int res : nums) {
+            if (count == 0) {
+                majority = res;
+            }
+            
+            if (res == majority) {
+                count++;
+            }
+            
+            else {
+                count--;
+            }
+            
+        }
+        
+        return majority;
+    }
+}

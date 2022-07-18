@@ -1,0 +1,79 @@
+class Solution 
+{ 
+    int findMaxFlow(int N, int M, ArrayList<ArrayList<Integer>> Edges) 
+    { 
+        // code here
+        int mFlow = 0;
+        int[][] graph = new int[N + 1][N + 1];
+        int[][] rgraph = new int[N + 1][N + 1];
+        
+        for (ArrayList<Integer> edge : Edges) {
+            int u = edge.get(0);
+            int v = edge.get(1);
+            int w = edge.get(2);
+            
+            graph[u][v] += w;
+            graph[v][u] += w;
+            
+            rgraph[u][v] += w;
+            rgraph[v][u] += w;
+        }
+        
+        int[] par = new int[N + 1];
+        while (path(rgraph, par) == true) {
+            int flow = Integer.MAX_VALUE;
+            
+            int v = N;
+            while (v != 1) {
+                int parV = par[v];
+                int price = rgraph[parV][v];
+                if (price < flow) {
+                    flow = price;
+                }
+                
+                v = parV;
+            }
+            
+            v = N;
+            while (v != 1) {
+                int parV = par[v];
+                rgraph[parV][v] -= flow;
+                rgraph[v][parV] += flow;
+                
+                v = parV;
+            }
+            
+            mFlow += flow;
+        }
+        
+        return mFlow;
+    }
+    
+    public boolean path(int[][] rgraph, int[] par) {
+            Queue<Integer> que = new ArrayDeque<>();
+            boolean[] vis = new boolean[par.length];
+            
+            que.add(1);
+            
+            while(que.size() > 0) {
+                int rem = que.remove();
+                if (vis[rem] == true) {
+                    continue;
+                }
+                vis[rem] = true;
+                
+                if (rem == par.length - 1) {
+                    return true;
+                }
+                
+                for (int i = 1; i < rgraph.length; i++) {
+                    if (rgraph[rem][i] > 0 && !vis[i]) {
+                        que.add(i);
+                        par[i] = rem;
+                    }
+                }
+            }
+            
+            return false;
+        }
+}

@@ -1,0 +1,29 @@
+class Solution {
+    public int[] minOperations(String boxes) {
+        int left = 0;
+        int right = 0;
+        int[] res = new int[boxes.length()];
+        int steps = 0;
+        
+        for (int i = 0; i < boxes.length(); i++) {
+            if (boxes.charAt(i) == '1') {
+                steps += i;
+                right++;
+            }
+        }
+        
+        for (int i = 0; i < boxes.length(); i++) {
+            res[i] = steps;
+            
+            if (boxes.charAt(i) == '1') {
+                right--;   // right side '1' will decrease
+                left++;    // left side '1' will increase
+            }
+            
+            steps += left;   // moving one step away from left side 1's
+            steps -= right;  // moving one strp closer to right side 1's
+        }
+        
+        return res;
+    }
+}

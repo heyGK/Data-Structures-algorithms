@@ -1,0 +1,34 @@
+class Solution {
+    public int maximumSwap(int num) {
+        char[] arr = (num + "").toCharArray();
+        int[] maxToRight = new int[arr.length];
+        int max = arr.length - 1;
+        maxToRight[max] = -1;
+        
+        for (int i = arr.length - 2; i >= 0; i--) {
+            maxToRight[i] = arr[i] > arr[max] ? i : max;
+            if (arr[i] > arr[max]) {
+                max = i;
+            }
+        }
+        
+        for (int i = 0; i < arr.length; i++) {
+            if (i == arr.length - 1) {
+                break;
+            }
+            
+            if (arr[i] < arr[maxToRight[i]]) {
+                swap(arr, i, maxToRight[i]);
+                break;
+            }
+        }
+        
+        return Integer.parseInt(new String(arr));
+    }
+    
+    public void swap(char[] arr, int i, int j) {
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+}

@@ -1,0 +1,27 @@
+// Can be done by taking left and right arrays too, storing distance to 1's in them.
+class Solution {
+    public int maxDistToClosest(int[] seats) {
+        int preZeros = -1;
+        int maxZeros = -1;
+        int suffZeros = -1;
+        int zeros = 0;
+        
+        for (int i = 0; i < seats.length; i++) {
+            if (seats[i] == 0) {
+                zeros++;
+            }
+            else {
+                if (preZeros == -1) {
+                    preZeros = zeros;
+                }
+                else {
+                    maxZeros = Math.max(maxZeros, zeros);
+                }
+                zeros = 0;
+            }
+        }
+        suffZeros = zeros;
+        
+        return Math.max((maxZeros + 1) / 2, Math.max(suffZeros, preZeros));
+    }
+}

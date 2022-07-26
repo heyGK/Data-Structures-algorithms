@@ -1,0 +1,18 @@
+class Solution {
+    public int partitionDisjoint(int[] nums) {
+        int maxTillPart = nums[0];
+        int maxTillScan = nums[0];
+        int partIdx = 0;
+        
+        for (int i = 0; i < nums.length; i++) {
+            maxTillScan = Math.max(nums[i], maxTillScan);
+            
+            if (nums[i] < maxTillPart) {
+                partIdx = i;
+                maxTillPart = maxTillScan;
+            }
+        }
+        
+        return partIdx + 1;
+    }
+}

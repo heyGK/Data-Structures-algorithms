@@ -1,0 +1,38 @@
+public class Solution {
+    public int solve(int[] A) {
+        int es = 0;
+        int os = 0;
+        for (int i = 0; i < A.length; i++) {
+            if (i % 2 == 0) {
+                es += A[i];
+            }       
+            else if (i % 2 != 0) {
+                os += A[i];
+            }
+        }
+        
+        int leftEvenSum = 0;
+        int leftOddSum = 0;
+        int count = 0;
+        for (int i  = 0; i < A.length; i++) {
+            int rightOddSum = os - leftOddSum;
+            int rightEvenSum = es - leftEvenSum;
+            if (i % 2 == 0) {
+                rightEvenSum -= A[i];
+                if (leftEvenSum + rightOddSum == leftOddSum + rightEvenSum) {
+                    count++;
+                }
+                leftEvenSum += A[i];
+            }
+            else {
+                rightOddSum -= A[i];
+                if (leftEvenSum + rightOddSum == leftOddSum + rightEvenSum) {
+                    count++;
+                }
+                leftOddSum += A[i];
+            }
+        }
+        
+        return count;
+    }
+}

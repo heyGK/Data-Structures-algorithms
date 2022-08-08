@@ -1,0 +1,37 @@
+class Solution {
+    public int splitArray(int[] nums, int m) {
+        int hi = 0;
+        int lo = Integer.MIN_VALUE;
+        
+        for (int i = 0; i < nums.length; i++) {
+            lo = Math.max(lo, nums[i]);
+            hi += nums[i];
+        }
+        
+        while (lo < hi) {
+            int mid = (lo + hi) / 2;
+            int limit = mid;
+            
+            int countParts = 1;
+            int currSum = 0;
+            for (int i = 0; i < nums.length; i++) {
+                if (currSum + nums[i] <= limit) {
+                    currSum += nums[i];
+                }
+                else {
+                    currSum = nums[i];
+                    countParts++;
+                }
+            }
+            
+            if (countParts > m) {
+                lo = mid + 1;
+            }
+            else {
+                hi = mid;
+            }
+        }
+        
+        return lo;
+    }
+}

@@ -1,0 +1,31 @@
+class Solution {
+    public int minimumSize(int[] nums, int maxOperations) {
+        int lo = 1;
+        int hi = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            hi = Math.max(hi, nums[i]);
+        }
+        
+        while (lo < hi) {
+            int mid = (lo + hi) / 2;
+            
+            int totalOp = 0;
+            for (int i = 0; i < nums.length; i++) {
+                if (nums[i] > mid) {
+                    int spare = nums[i] - mid;
+                    int op = (int)Math.ceil((double)spare / mid);
+                    totalOp += op;
+                }
+            }
+            
+            if (totalOp > maxOperations) {
+                lo = mid + 1;
+            }
+            else {
+                hi = mid;
+            }
+        }
+        
+        return lo;
+    }
+}

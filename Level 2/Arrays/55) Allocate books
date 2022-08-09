@@ -1,0 +1,39 @@
+public class Solution {
+    public int books(int[] A, int B) {
+        if (B > A.length) {
+            return -1;
+        }
+        
+        int lo = Integer.MIN_VALUE;
+        int hi = 0;
+        for (int i = 0; i < A.length; i++) {
+            lo = Math.max(lo, A[i]);
+            hi += A[i];
+       }
+       
+       while (lo < hi) {
+           int mid = (lo + hi) / 2;
+           
+           int pages = 0;
+           int noOfStudents = 1;
+           for (int i = 0; i < A.length; i++) {
+               if (pages + A[i] <= mid) {
+                   pages += A[i];  
+               }
+               else {
+                   pages = A[i];
+                   noOfStudents++;
+               }
+           }
+           
+           if (noOfStudents > B) {
+               lo = mid + 1;
+           }
+           else {
+               hi = mid;
+           }
+       }
+       
+       return lo;
+    }
+}

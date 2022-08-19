@@ -1,0 +1,78 @@
+class Solution {
+    Integer[] ans;
+    public class Pair {
+        int val;
+        int idx;
+        
+        Pair(int idx, int val) {
+            this.idx = idx;
+            this.val = val;
+        }
+    }
+    
+    public List<Integer> countSmaller(int[] nums) {
+        ans = new Integer[nums.length];
+        Arrays.fill(ans, 0);
+        
+        Pair[] pairs = new Pair[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            pairs[i] = new Pair(i, nums[i]);
+        }
+        
+        merge(pairs, 0, nums.length - 1);
+        
+        return Arrays.asList(ans);
+    }
+    
+    public Pair[] merge(Pair[] pairs, int lo, int hi) {
+        if (lo == hi) {
+            Pair[] p = new Pair[1];
+            p[0] = new Pair(lo, pairs[lo].val);
+            return p;
+        }
+        
+        int mid = lo + (hi - lo) / 2;
+        
+        Pair[] left = merge(pairs, lo, mid);
+        Pair[] right = merge(pairs, mid + 1, hi);
+        
+        Pair[] both = merge2(left, right);
+        
+        return both;
+    }
+    
+    public Pair[] merge2(Pair[] left, Pair[] right) {
+        Pair[] res = new Pair[left.length + right.length];
+        int i = 0;
+        int j = 0;
+        int k = 0;
+        
+        while (i < left.length && j < right.length) {
+            if (left[i].val <= right[j].val) {
+                res[k] = right[j];
+                k++;
+                j++;
+            }
+            else {
+                res[k] = left[i];
+                ans[left[i].idx] += (right.length - j);
+                k++;
+                i++;
+            }
+        }
+        
+        while (i < left.length) {
+            res[k] = left[i];
+            i++;
+            k++;
+        }
+        
+        while (j < right.length) {
+            res[k] = right[j];
+            j++;
+            k++;
+        }
+        
+        return res;
+    }
+}

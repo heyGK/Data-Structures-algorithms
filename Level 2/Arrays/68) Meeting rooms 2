@@ -1,0 +1,40 @@
+public class Solution {
+    /**
+     * @param intervals: an array of meeting time intervals
+     * @return: the minimum number of conference rooms required
+     */
+    public int minMeetingRooms(List<Interval> intervals) {
+        // Write your code here
+        int[] start = new int[intervals.size()];
+        int[] end = new int[intervals.size()];
+
+        int j = 0;
+        for (Interval i : intervals) {
+            start[j] = i.start;
+            end[j] = i.end;
+            j++;
+        }
+
+        Arrays.sort(start);
+        Arrays.sort(end);
+
+        int count = 0;
+        int reqd = 0;
+        int i = 0;
+        j = 0;
+        while (i < start.length && j < end.length) {
+            if (start[i] >= end[j]) {
+                j++;
+                count--;
+            }
+            else {
+                i++;
+                count++;
+            }
+
+            reqd = Math.max(reqd, count);
+        }
+
+        return reqd;
+    }
+}

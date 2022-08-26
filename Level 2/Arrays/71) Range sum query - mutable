@@ -1,0 +1,77 @@
+class NumArray {
+    class Node {
+        int start;
+        int end;
+        int val;
+        
+        Node left;
+        Node right;
+    }
+    
+    Node root;
+    Node construct(int[] nums, int lo, int hi) {
+        if (lo == hi) {
+            Node node = new Node();
+            node.start = node.end = lo;
+            node.val = nums[lo];
+            node.left = node.right = null;
+            return node;
+        }
+        
+        Node node = new Node();
+        node.start = lo;
+        node.end = hi;
+        int mid = (lo + hi) / 2;
+        node.left = construct(nums, lo, mid);
+        node.right = construct(nums, mid + 1, hi);
+        
+        node.val += node.left.val;
+        node.val += node.right.val;
+        
+        return node;
+    }
+
+    public NumArray(int[] nums) {
+        root = construct(nums, 0, nums.length - 1);
+    }
+    
+    void update (Node node, int idx, int val) {
+        if (node.start == node.end) {
+            node.val = val;
+            return;
+        }
+        
+        int mid = (node.start + node.end) / 2;
+        
+        if (idx <= mid) {
+            update(node.left, idx, val);
+        }
+        else {
+            update(node.right, idx, val);
+        }
+        
+        node.val = node.left.val + node.right.val;
+    }
+    
+    public void update(int index, int val) {
+        update(root, index, val);
+    }
+    
+    int query(Node node, int nStart, int nEnd) {
+        if (nStart > node.end || nEnd < node.start) {
+            return 0;
+        }
+        else if (node.start >= nStart && node.end <= nEnd) {
+            return node.val;
+        }
+        else {
+            int lval = query(node.left, nStart, nEnd);
+            int rval = query(node.right, nStart, nEnd);
+            return lval + rval;
+        }
+    }
+    
+    public int sumRange(int left, int right) {
+        return query(root, left, right);
+    }
+}

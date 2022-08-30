@@ -1,0 +1,32 @@
+class Solution {
+    public String shortestPalindrome(String s) {
+        String str = s + "$" + new StringBuilder(s).reverse().toString();
+        int lps = getLPS(str);
+        
+        String ans = new StringBuilder(s.substring(lps)).reverse().toString() + s;
+        return ans;
+    }
+    
+    public int getLPS(String s) {
+        int[] lps = new int[s.length()];
+        int i = 1;
+        int len = 0;
+        while (i < s.length()) {
+            if (s.charAt(i) == s.charAt(len)) {
+                lps[i] = len + 1;
+                i++;
+                len++;
+            }
+            else {
+                if (len == 0) {
+                    i++;
+                }
+                else {
+                    len = lps[len - 1];
+                }
+            }
+        }
+        
+        return lps[lps.length - 1];
+    }
+}

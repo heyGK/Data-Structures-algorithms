@@ -1,0 +1,54 @@
+public class Solution {
+    /**
+     * @param costs: n x k cost matrix
+     * @return: an integer, the minimum cost to paint all houses
+     */
+    public int minCostII(int[][] costs) {
+        // write your code here
+        if (costs.length == 0) {
+            return 0;
+        }
+
+        int min = Integer.MAX_VALUE;
+        int sMin = Integer.MAX_VALUE;
+        for (int i = 0; i < costs[0].length; i++) {
+            if (costs[0][i] <= min) {
+                sMin = min;
+                min = costs[0][i];
+            }
+            else if (costs[0][i] <= sMin) {
+                sMin = costs[0][i];
+            }
+        }
+
+        for (int i = 1; i < costs.length; i++) {
+            int nMin = Integer.MAX_VALUE;
+            int nSMin = Integer.MAX_VALUE;
+            for (int j = 0; j < costs[0].length; j++) {
+                if (costs[i - 1][j] != min) {
+                    costs[i][j] += min;
+                }
+                else {
+                    costs[i][j] += sMin;
+                }
+
+                if (costs[i][j] <= nMin) {
+                    nSMin = nMin;
+                    nMin = costs[i][j];
+                }
+                else if (costs[i][j] <= nSMin) {
+                    nSMin = costs[i][j];
+                }
+            }
+            min = nMin;
+            sMin = nSMin;
+        }
+
+        int rmin = Integer.MAX_VALUE;
+        for (int i = 0; i < costs[0].length; i++) {
+            rmin = Math.min(min, costs[costs.length - 1][i]);
+        }
+
+        return rmin;
+    }
+}

@@ -1,0 +1,19 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        int bsp = -prices[0];   // bought state profit
+        int ssp = 0;   // selling state profit
+        int csp = 0;   // cool down profit
+        
+        for (int i = 1; i < prices.length; i++) {
+            int newBSP = Math.max(bsp, csp - prices[i]);
+            int newSSP = Math.max(ssp, prices[i] + bsp);
+            int newCSP = Math.max(csp, ssp);
+            
+            bsp = newBSP;
+            ssp = newSSP;
+            csp = newCSP;
+        }
+        
+        return ssp;
+    }
+}

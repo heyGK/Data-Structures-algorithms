@@ -1,0 +1,27 @@
+class Solution {
+    public int maxProfit(int[] prices) {
+        int[] dpSell = new int[prices.length];
+        dpSell[0] = 0;
+        int min = prices[0];
+        for (int i = 1; i < prices.length; i++) {
+            min = Math.min(min, prices[i]);
+            int pist = prices[i] - min;  // profit if sold today
+            dpSell[i] = Math.max(dpSell[i - 1], pist);
+        }
+        
+        int[] dpBuy = new int[prices.length];
+        int max = prices[prices.length - 1];
+        for (int i = prices.length - 2; i >= 0; i--) {
+            max = Math.max(max, prices[i]);
+            int pist = max - prices[i];
+            dpBuy[i] = Math.max(dpBuy[i + 1], pist);
+        }
+        
+        int val = 0;
+        for (int i = 0; i < prices.length; i++) {
+            val = Math.max(val, dpSell[i] + dpBuy[i]);
+        }
+        
+        return val;
+    }
+}

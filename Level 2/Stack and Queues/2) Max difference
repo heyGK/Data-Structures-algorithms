@@ -1,0 +1,49 @@
+class Solution
+{
+    int findMaxDiff(int a[], int n)
+    {
+	// Your code here	
+	    int[] ls = leftSmaller(a);
+	    int[] rs = rightSmaller(a);
+	    
+	    int max = Integer.MIN_VALUE;
+	    for (int i = 0; i < a.length; i++) {
+	        int val = Math.abs(ls[i] - rs[i]);
+	        max = Math.max(max, val);
+	    }
+	    
+	    return max;
+    }
+    
+    int[] rightSmaller(int[] a) {
+        Stack<Integer> stk = new Stack<>();
+        int[] res = new int[a.length];
+        stk.push(0);
+        for (int i = 1; i < a.length; i++) {
+            while (stk.size() > 0 && a[i] < a[stk.peek()]) {
+                res[stk.peek()] = a[i];
+                stk.pop();
+            }
+            
+            stk.push(i);
+        }
+        
+        return res;
+    }
+    
+    int[] leftSmaller(int[] a) {
+        Stack<Integer> stk = new Stack<>();
+        int[] res = new int[a.length];
+        stk.push(a.length - 1);
+        for (int i = a.length - 2; i >= 0; i--) {
+            while (stk.size() > 0 && a[i] < a[stk.peek()]) {
+                res[stk.peek()] = a[i];
+                stk.pop();
+            }
+            
+            stk.push(i);
+        }
+        
+        return res;
+    }
+}

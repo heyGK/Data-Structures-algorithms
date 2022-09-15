@@ -1,0 +1,23 @@
+class Solution {
+    public int minSwaps(String s) {
+        int openB = 0;
+        int unbalanced = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '[') {
+                openB++;
+            }
+            else {
+                if (openB > 0) {
+                    openB--;
+                }
+                else {
+                    unbalanced++;
+                }
+            }
+        }
+        
+        unbalanced += openB;
+        unbalanced /= 2;
+        return (int)Math.ceil(unbalanced/2.0);    // ceil -> 2.5 = 3 (value just greater than)
+    }
+}

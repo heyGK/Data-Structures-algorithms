@@ -1,0 +1,53 @@
+class Solution {
+    boolean[][] dp;
+    void isPalindrome(String s) {
+        dp = new boolean[s.length()][s.length()];
+        for (int g = 0; g < dp.length; g++) {
+            for (int i = 0, j = g; j < dp[0].length; j++, i++) {
+                if (g == 0) {
+                    dp[i][j] = true;
+                }
+                else if (g == 1) {
+                    dp[i][j] = s.charAt(i) == s.charAt(j);
+                }
+                else {
+                    dp[i][j] = (s.charAt(i) == s.charAt(j) && dp[i + 1][j - 1] == true);
+                }
+            }
+        }
+    }
+    public List<List<String>> partition(String s) {
+         isPalindrome(s);
+         List<List<String>>[] dp2 = new List[s.length()];
+        return helper(s, s.length() - 1, dp2);
+    }
+
+    public List<List<String>> helper(String s, int j, List[] dp2) {
+        if (j < 0) {
+            List<List<String>> newres = new ArrayList<>();
+            List<String> newans = new ArrayList<>();
+            newres.add(newans);
+            return newres;
+        }
+
+        if(dp2[j] != null) {
+            return (List<List<String>>)dp2[j];
+        }
+
+        List<List<String>> res = new ArrayList<>();
+        for (int i = j; i >= 0; i--) {
+            if (dp[i][j]) {
+                String part = s.substring(i, j + 1);
+                List<List<String>> ans = helper(s, i - 1, dp2);
+                for (List<String> mylist : ans) {
+                    ArrayList<String> rlist = new ArrayList<>(mylist);
+                    rlist.add(part);
+                    res.add(rlist);
+                }
+            }
+        }
+
+        dp2[j] = res;
+        return res;
+    }
+}

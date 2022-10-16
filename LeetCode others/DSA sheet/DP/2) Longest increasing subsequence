@@ -19,3 +19,29 @@ class Solution {
         return max;
     }
 }
+
+
+--------------O(nlogn)----------
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        int len = 1;
+        for (int i = 1; i < dp.length; i++) {
+            if (nums[i] > dp[len - 1]) {
+                dp[len] = nums[i];
+                len++;
+            }
+            else {
+                int idx = Arrays.binarySearch(dp, 0, len - 1, nums[i]);
+                if (idx < 0) {
+                    idx = -idx;
+                    idx = idx - 1;
+                }
+                dp[idx] = nums[i];
+            }
+        }
+
+        return len;
+    }
+}

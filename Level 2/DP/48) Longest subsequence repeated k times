@@ -40,3 +40,57 @@ class Solution {
         return false;
     }
 }
+
+--------------OPTIMIZED------------
+class Solution {
+    public String longestSubsequenceRepeatedK(String s, int k) {
+        int[] map = new int[26];
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            map[ch - 'a']++;
+        }
+
+        ArrayList<Character> list = new ArrayList<>();
+        for (int i = 0; i < map.length; i++) {
+            if (map[i] >= k) {
+                list.add((char)('a' + i));
+            }
+        }
+
+        String ans = "";
+        Queue<String> que = new ArrayDeque();
+        que.add("");
+        while (que.size() > 0) {
+            String rem = que.remove();
+            for (char ch : list) {
+                String next = rem + ch;
+                if(isKsub(s, next, k)) {
+                    que.add(next);
+                    ans = next;
+                }
+            }
+        }
+
+        return ans;
+    }
+
+    boolean isKsub(String s, String sub, int k) {
+        int rep = 0;
+        int j = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (j < sub.length() && sub.charAt(j) == s.charAt(i)) {
+                j++;
+            }
+            if (j == sub.length()) {
+                j = 0;
+                rep++;
+            }
+
+            if (rep == k) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}

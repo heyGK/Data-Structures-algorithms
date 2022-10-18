@@ -1,0 +1,42 @@
+class Solution {
+    public String longestSubsequenceRepeatedK(String s, int k) {
+        String res = "";
+        Queue<String> que = new ArrayDeque();
+        que.add("");
+        while (que.size() > 0) {
+            int size = que.size();
+            while (size-- > 0) {
+                String rem = que.remove();
+                for (int i = 0; i < 26; i++) {
+                    String next = rem + (char)('a' + i);
+                    if (isKsub(s, next, k)) {
+                        res = next;
+                        que.add(next);
+                    }
+                }
+            }
+        }
+
+        return res;
+    }
+
+    boolean isKsub(String s, String sub, int k) {
+        int rep = 0;
+        int j = 0;
+        for (int i = 0; i < s.length(); i++) {
+            if (j < sub.length() && sub.charAt(j) == s.charAt(i)) {
+                j++;
+            }
+            if (j == sub.length()) {
+                j = 0;
+                rep++;
+            }
+
+            if (rep == k) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+}

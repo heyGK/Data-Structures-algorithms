@@ -1,48 +1,28 @@
 class Solution {
-    public class Pair {
-        int v;
-        int color;
-
-        Pair (int v, int color) {
-            this.v = v;
-            this.color = color;
-        }
-    }
     public boolean isBipartite(int[][] graph) {
         int[] visited = new int[graph.length];
         for (int i = 0; i < graph.length; i++) {
             if (visited[i] == 0) {
-                boolean isBipartite = bfs(graph, visited, i);
-                if (isBipartite == false) {
+                if(!dfs(graph, visited, i, 1)) return false;
+            }
+       }
+
+       return true;
+    }
+
+    public boolean dfs(int[][] graph, int[] visited, int src, int color) {
+        visited[src] = color;
+        for (int n : graph[src]) {
+            if (visited[n] == 0) {
+                if(dfs(graph, visited, n, color * (-1)) == false) {
                     return false;
                 }
+            }
+            else if (visited[n] == color) {
+                return false;
             }
         }
 
         return true;
-    }
-
-    public boolean bfs(int[][] graph, int[] visited, int src) {
-       Queue<Pair> que = new ArrayDeque();
-       que.add(new Pair(src, 1));
-
-       while (que.size() > 0) {
-           Pair rem = que.remove();
-           if (visited[rem.v] != 0) {
-               if (visited[rem.v] == rem.color) {
-                   continue;
-               }
-               else {
-                   return false;
-               }
-           }
-
-           visited[rem.v] = rem.color;
-           for (int i : graph[rem.v]) {
-               que.add(new Pair(i, rem.color * (-1)));
-           }
-       }
-
-       return true;
     }
 }

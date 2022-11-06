@@ -1,0 +1,38 @@
+-------------TSORT--------------
+class Solution {
+    // Function to detect cycle in a directed graph.
+    public boolean isCyclic(int V, ArrayList<ArrayList<Integer>> adj) {
+        // code here
+        int[] in = new int[V];
+        for (int i = 0; i < V; i++) {
+            for (int j : adj.get(i)) {
+                in[j]++;
+            }
+        }
+        
+        Queue<Integer> que = new ArrayDeque();
+        for (int i = 0; i < V; i++) {
+            if (in[i] == 0) {
+                que.add(i);
+            }
+        }
+        
+        ArrayList<Integer> tsort = new ArrayList<>();
+        while(que.size() > 0) {
+            int rem = que.remove();
+            tsort.add(rem);
+            for (int n : adj.get(rem)) {
+                in[n]--;
+                if (in[n] == 0) {
+                    que.add(n);
+                }
+            }
+        }
+        
+        if (tsort.size() < V) {
+            return true;
+        }
+        
+        return false;
+    }
+}
